@@ -12,35 +12,42 @@ class TextProcessor:
         self.stemmer = PorterStemmer()
         self.lemmatizer = WordNetLemmatizer()
         self.tokens = []
+        self.vocabulary = []
         self.text = ""
 
     def process(self, text):
         self.text = text
         self.tokenize()
+        self.lowercase()
         self.remove_stop_words()
         if self.collection != 'CACM':
             self.stem()
             # self.lemmatize()
+
         print(self.tokens, len(self.tokens))
+        print(self.vocabulary, len(self.vocabulary))
 
     def tokenize(self):
         self.tokens = self.tokenizer.tokenize(self.text)
-        # set all tokens to lowercase
-        self.tokens = [token.lower() for token in self.tokens]
+        self.vocabulary = self.tokens
+
+    def lowercase(self):
+        self.vocabulary = [token.lower() for token in self.vocabulary]
 
     def remove_stop_words(self):
         with open("CACM/common_words") as f:
             stop_words = f.read()
-        self.tokens = [token for token in self.tokens if token not in stop_words]
+        self.vocabulary = [word for word in self.vocabulary if word not in stop_words]
 
     def stem(self):
-        self.tokens = [self.stemmer.stem(token) for token in self.tokens]
+        self.vocabulary = [self.stemmer.stem(word) for word in self.vocabulary]
 
     def lemmatize(self):
-        self.tokens = [self.lemmatizer.lemmatize(token) for token in self.tokens]
+        self.vocabulary = [self.lemmatizer.lemmatize(word) for word in self.vocabulary]
 
 
 if __name__ == "__main__":
     processor = TextProcessor('CACM')
     sentence = 'A quick brown fox jumps over the lazy dog.'
-    processor.process(sentence)
+    sentence2 = "At eight o'clock on Thursday morning Arthur didn't feel very good."
+    processor.process(sentence2)
