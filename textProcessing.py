@@ -1,9 +1,20 @@
 import nltk
+from nltk.tokenize import RegexpTokenizer
 
-nltk.download('punkt')
 
-sentence = """At eight o'clock on Thursday morning"""
+class TextProcessor:
 
-tokens = nltk.word_tokenize(sentence)
+    def __init__(self):
+        nltk.download('punkt')
+        self.tokenizer = RegexpTokenizer(r'\w+')
+        self.tokens = []
 
-print(tokens)
+    def tokenize(self, text):
+        self.tokens = self.tokenizer.tokenize(text)
+        print(self.tokens)
+
+
+if __name__ == "__main__":
+    processor = TextProcessor()
+    sentence = 'Eighty-seven miles to go, yet.  Onward!'
+    processor.tokenize(sentence)
