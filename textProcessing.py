@@ -24,8 +24,9 @@ class TextProcessor:
             self.stem()
             # self.lemmatize()
 
-        print(self.tokens, len(self.tokens))
-        print(self.vocabulary, len(self.vocabulary))
+        # print(self.tokens, len(self.tokens))
+        # print(self.vocabulary, len(self.vocabulary))
+        return self.tokens, self.vocabulary
 
     def tokenize(self):
         self.tokens = self.tokenizer.tokenize(self.text)
