@@ -68,19 +68,21 @@ class CACMParser:
                 all[id] = all[id] + " " + keywords[id]
         return all
 
-parser = CACMParser()
-with open("CACM/cacm.all") as f:
-    read_data = f.read()
 
-dic = parser.parse_documents(read_data)
-#print(dic.keys())
-#print(dic)
+if __name__ == "__main__":
+    parser = CACMParser()
+    with open("CACM/cacm.all") as f:
+        read_data = f.read()
 
-# print(parser.parse_key_words(dic))
+    dic = parser.parse_documents(read_data)
+    # print(dic.keys())
+    # print(dic)
 
-print(parser.parse_all(dic))
+    # print(parser.parse_key_words(dic))
 
-# print(parser.parse_title(dic))
-# print(parser.parse_summary(dic))
+    print(parser.parse_all(dic))
+
+    # print(parser.parse_title(dic))
+    # print(parser.parse_summary(dic))
 
 

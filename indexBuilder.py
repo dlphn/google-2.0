@@ -1,5 +1,6 @@
 # from textProcessing import *
 import textProcessing
+import CACMParser
 
 
 class IndexBuilder:
@@ -18,12 +19,16 @@ class IndexBuilder:
             for word in result[1]:
                 if word not in self.vocabulary:
                     self.vocabulary.append(word)
-        print(self.tokens)
-        print(self.vocabulary)
 
     def get_size(self):
         print("Tokens:", len(self.tokens))
         print("Vocabulary:", len(self.vocabulary))
+
+    def get_tokens(self):
+        return self.tokens
+
+    def get_vocabulary(self):
+        return self.vocabulary
 
 
 if __name__ == "__main__":
