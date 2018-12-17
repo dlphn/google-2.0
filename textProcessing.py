@@ -12,6 +12,7 @@ class TextProcessor:
         self.stemmer = PorterStemmer()
         self.lemmatizer = WordNetLemmatizer()
         self.tokens = []
+        self.tokens_freq = {}
         self.vocabulary = []
         self.text = ""
 
@@ -26,10 +27,15 @@ class TextProcessor:
 
         # print(self.tokens, len(self.tokens))
         # print(self.vocabulary, len(self.vocabulary))
-        return self.tokens, self.vocabulary
+        return self.tokens, self.vocabulary, self.tokens_freq
 
     def tokenize(self):
         self.tokens = self.tokenizer.tokenize(self.text)
+        for token in self.tokens:
+            if token in self.tokens_freq.keys():
+                self.tokens_freq[token] += 1
+            else:
+                self.tokens_freq[token] = 1
         self.vocabulary = self.tokens
 
     def lowercase(self):
