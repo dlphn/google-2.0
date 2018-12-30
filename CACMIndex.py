@@ -1,6 +1,8 @@
 import CACMParser
 import indexBuilder
 
+from frequencyRankGraph import *
+
 
 class CACMIndex:
 
@@ -13,19 +15,28 @@ class CACMIndex:
             read_data = f.read()
         dic = self.parser.parse_documents(read_data)
         data = self.parser.parse_all(dic)
-        self.index = indexBuilder.IndexBuilder('CACM', data)
+        all_words = " ".join(data.values())
+        self.index = indexBuilder.IndexBuilder('CACM1', all_words)
         self.index.build()
         self.index.get_size()
 
     def get_tokens(self):
-        print(self.index.get_tokens())
+        # print(self.index.get_tokens())
+        return len(self.index.get_tokens())
 
     def get_vocabulary(self):
         print(self.index.get_vocabulary())
+
+    def get_freq(self):
+        return self.index.get_freq()
 
 
 if __name__ == "__main__":
     index = CACMIndex()
     index.build()
-    index.get_tokens()
-    index.get_vocabulary()
+    # index.get_tokens()
+    # index.get_vocabulary()
+
+    graph = FrequencyRankGraph(index.get_freq(), index.get_tokens())
+    graph.draw_graph()
+    graph.draw_log_graph()

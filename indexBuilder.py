@@ -17,7 +17,7 @@ class IndexBuilder:
                 sentence = self.data[line]
                 result = self.processor.process(sentence)
                 self.tokens += result[0]
-                # self.tokens_freq += result[2]
+                self.tokens_freq = {key: self.tokens_freq.get(key, 0) + result[2].get(key, 0) for key in set(self.tokens_freq) | set(result[2])}
                 for word in result[1]:
                     if word not in self.vocabulary:
                         self.vocabulary.append(word)
