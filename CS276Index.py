@@ -1,8 +1,13 @@
 import os
-import indexBuilder
+from helpers import indexBuilder
 
 
 class CS276Index:
+    """
+    Build the CS276 collection's index:
+    - parse the different files in the multiple folders
+    - build index
+    """
 
     def __init__(self):
         self.index = None
@@ -33,6 +38,7 @@ if __name__ == "__main__":
     # index.get_tokens()
     # index.get_vocabulary()
 
+    print()
     print("For half of the text:")
     index.build(half=True)
 

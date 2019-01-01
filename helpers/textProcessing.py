@@ -3,6 +3,11 @@ from nltk.stem import PorterStemmer, WordNetLemmatizer
 
 
 class TextProcessor:
+    """
+    Text processing of a given sentence.
+    For a given sentence, TextProcessor will return the token and vocabulary lists,
+    as well as the token frequency table.
+    """
 
     def __init__(self, collection):
         # nltk.download('punkt')
@@ -21,12 +26,10 @@ class TextProcessor:
         self.tokenize()
         self.lowercase()
         self.remove_stop_words()
-        if self.collection != 'CACM':
+        if self.collection != 'CACM':    # no need to lemmatize the CACM collection
             self.stem()
             # self.lemmatize()
 
-        # print(self.tokens, len(self.tokens))
-        # print(self.vocabulary, len(self.vocabulary))
         return self.tokens, self.vocabulary, self.tokens_freq
 
     def tokenize(self):

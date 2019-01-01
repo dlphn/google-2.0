@@ -1,8 +1,12 @@
-import CACMParser
-import indexBuilder
+from helpers import indexBuilder, CACMParser
 
 
 class CACMIndex:
+    """
+    Build the CACM collection's index:
+    - parse the cacm.all file
+    - build index
+    """
 
     def __init__(self):
         self.parser = CACMParser.CACMParser()
@@ -32,5 +36,6 @@ if __name__ == "__main__":
     # index.get_tokens()
     # index.get_vocabulary()
 
+    print()
     print("For half of the text:")
     index.build(half=True)

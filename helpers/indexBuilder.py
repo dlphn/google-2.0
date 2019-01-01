@@ -1,7 +1,10 @@
-import textProcessing
+from helpers import textProcessing
 
 
 class IndexBuilder:
+    """
+    Build the index for a given collection: tokens, vocabulary, tokens frequency.
+    """
 
     def __init__(self, collection, data):
         self.collection = collection
@@ -47,6 +50,9 @@ if __name__ == "__main__":
         '2': "The white fox A quick brown fox jumps over the lazy dog. fox, brown, quick",
         '3': "Arthur and the kettle At eight o'clock on Thursday morning Arthur didn't feel very good. sick, work",
     })
+    indexCACM.build()
+    indexCACM.get_size()
+    print(indexCACM.get_freq())
     index = IndexBuilder('CS276', "A quick brown fox jumps over the lazy fox. At eight o'clock on Thursday morning Arthur didn't feel very good.")
     index.build()
     index.get_size()
