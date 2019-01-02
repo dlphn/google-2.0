@@ -1,4 +1,10 @@
+import logging
+import time
+
+from config import CACM_path
 from helpers import indexBuilder, CACMParser
+
+logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=logging.INFO)
 
 
 class CACMIndex:
@@ -13,7 +19,9 @@ class CACMIndex:
         self.index = None
 
     def build(self, half=False):
-        with open("CACM/cacm.all") as f:
+        logging.info("Start building index...")
+        start = time.time()
+        with open(CACM_path + "/cacm.all") as f:
             read_data = f.read()
         if half:
             read_data = read_data[:len(read_data)//2]
@@ -21,6 +29,8 @@ class CACMIndex:
         data = self.parser.parse_all(dic)
         self.index = indexBuilder.IndexBuilder('CACM', data)
         self.index.build()
+        end = time.time()
+        logging.info("Index built in {0} seconds".format(end - start))
         self.index.get_size()
 
     def get_tokens(self):

@@ -1,6 +1,8 @@
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 
+from config import CACM_path
+
 
 class TextProcessor:
     """
@@ -45,7 +47,7 @@ class TextProcessor:
         self.vocabulary = [token.lower() for token in self.vocabulary]
 
     def remove_stop_words(self):
-        with open("CACM/common_words") as f:
+        with open(CACM_path + "/common_words") as f:
             stop_words = f.read()
         self.vocabulary = [word for word in self.vocabulary if word not in stop_words]
 
@@ -58,6 +60,6 @@ class TextProcessor:
 
 if __name__ == "__main__":
     processor = TextProcessor('CACM')
-    sentence = 'A quick brown fox jumps over the lazy dog.'
+    sentence = 'A quick brown fox jumps over the lazy dog. fox dog'
     sentence2 = "At eight o'clock on Thursday morning Arthur didn't feel very good."
-    processor.process(sentence2)
+    print(processor.process(sentence))
