@@ -46,7 +46,7 @@ class CACMIndex:
         """
         dict_term = dict()
         term_id = 1
-        for vocab in self.index.get_vocabulary():
+        for vocab in sorted(list(self.index.get_vocabulary())):
             dict_term[vocab] = term_id
             term_id += 1
         return dict_term
