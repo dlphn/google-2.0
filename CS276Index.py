@@ -5,6 +5,9 @@ from helpers import indexBuilder
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=logging.INFO)
 
+from frequencyRankGraph import *
+
+
 
 class CS276Index:
     """
@@ -40,6 +43,9 @@ class CS276Index:
     def get_vocabulary(self):
         print(self.index.get_vocabulary())
 
+    def get_freq(self):
+        return self.index.get_freq()
+
 
 if __name__ == "__main__":
     index = CS276Index()
@@ -51,6 +57,9 @@ if __name__ == "__main__":
     # print("For half of the text:")  # Tokens: 12758945 - Vocabulary: 8432796
     # index.build(half=True)
 
+    graph = FrequencyRankGraph(index.get_freq())
+    graph.draw_graph()
+    graph.draw_log_graph()
 
 
 
