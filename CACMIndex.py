@@ -23,7 +23,7 @@ class CACMIndex:
     def build(self, half=False):
         logging.info("Start building index...")
         start = time.time()
-        data = self.get_documentID(half)
+        data = self.get_document_dict(half)
         all_words = " ".join(data.values())
         self.index = indexBuilder.IndexBuilder('CACM', all_words)
         self.index.build()
@@ -37,15 +37,15 @@ class CACMIndex:
     def get_vocabulary(self):
         print(self.index.get_vocabulary())
 
-    def get_termID(self):
-        termID = dict()
-        id = 1
-        for voca in self.index.get_vocabulary():
-            termID[id] = voca
-            id += 1
-        return termID
+    def get_term_dict(self):
+        dict_term = dict()
+        term_id = 1
+        for vocab in self.index.get_vocabulary():
+            dict_term[vocab] = term_id
+            term_id += 1
+        return dict_term
 
-    def get_documentID(self, half=False):
+    def get_document_dict(self, half=False):
         with open(CACM_path + "/cacm.all") as f:
             read_data = f.read()
         if half:
@@ -63,8 +63,8 @@ if __name__ == "__main__":
     index.build()
     # index.get_tokens()
     # index.get_vocabulary()
-    print(index.get_termID())
-    print(index.get_documentID())
+    print(index.get_term_dict())
+    # print(index.get_document_dict())
 
     # print()
     # print("For half of the text:")
