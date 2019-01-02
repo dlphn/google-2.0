@@ -58,19 +58,18 @@ class CACMIndex:
         return self.index.get_freq()
 
 
-
 if __name__ == "__main__":
     index = CACMIndex()
     index.build()
     # index.get_tokens()
     # index.get_vocabulary()
-    # print(index.get_termID())
-    # print(index.get_documentID())
+    print(index.get_termID())
+    print(index.get_documentID())
 
     # print()
     # print("For half of the text:")
     # index.build(half=True)
 
-    graph = FrequencyRankGraph(index.get_freq())
-    graph.draw_graph()
-    graph.draw_log_graph()
+    # graph = FrequencyRankGraph(index.get_freq())
+    # graph.draw_graph()
+    # graph.draw_log_graph()
