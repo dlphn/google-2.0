@@ -6,6 +6,8 @@ from helpers import indexBuilder, CACMParser
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=logging.INFO)
 
+from frequencyRankGraph import *
+
 
 class CACMIndex:
     """
@@ -40,6 +42,9 @@ class CACMIndex:
     def get_vocabulary(self):
         print(self.index.get_vocabulary())
 
+    def get_freq(self):
+        return self.index.get_freq()
+
 
 if __name__ == "__main__":
     index = CACMIndex()
@@ -50,3 +55,7 @@ if __name__ == "__main__":
     print()
     print("For half of the text:")
     index.build(half=True)
+
+    graph = FrequencyRankGraph(index.get_freq())
+    graph.draw_graph()
+    graph.draw_log_graph()
