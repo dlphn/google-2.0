@@ -4,7 +4,7 @@ import numpy as np
 
 class FrequencyRankGraph:
 
-    def __init__(self, freq, tokens):
+    def __init__(self, freq):
         self.freq = [value for value in freq.values()]
         self.freq.sort(reverse=True)
         self.rank = [i for i in range(1, len(freq)+1)]
