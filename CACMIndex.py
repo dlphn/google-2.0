@@ -27,7 +27,8 @@ class CACMIndex:
             read_data = read_data[:len(read_data)//2]
         dic = self.parser.parse_documents(read_data)
         data = self.parser.parse_all(dic)
-        self.index = indexBuilder.IndexBuilder('CACM', data)
+        all_words = " ".join(data.values())
+        self.index = indexBuilder.IndexBuilder('CACM', all_words)
         self.index.build()
         end = time.time()
         logging.info("Index built in {0} seconds".format(end - start))

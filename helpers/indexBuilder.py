@@ -15,32 +15,16 @@ class IndexBuilder:
         self.processor = textProcessing.TextProcessor(collection)
         self.tokens = []
         self.tokens_freq = {}
-        self.vocabulary = []
+        self.vocabulary = set()
 
     def build(self):
-        if self.collection == 'CACM':
-            for line in self.data:
-                sentence = self.data[line]
-                result = self.processor.process(sentence)
-                self.tokens += result[0]
-                # self.tokens_freq += result[2]
-                for word in result[1]:
-                    if word not in self.vocabulary:
-                        self.vocabulary.append(word)
-        else:
-            result = self.processor.process(self.data)
-            self.tokens = result[0]
-            vocab_size = len(result[1])
-            print(vocab_size)
-            count = 0
-            for word in result[1]:
-                if word not in self.vocabulary:
-                    self.vocabulary.append(word)
-                count += 1
-                if count % 1000 == 0:
-                    logging.info("Processed {0}/{1}".format(count, vocab_size))
-            self.tokens_freq = result[2]
-            # self.tokens_freq = sorted(self.tokens_freq.values(), reverse=True)
+        result = self.processor.process(self.data)
+        self.tokens = result[0]
+        vocab_size = len(result[1])
+        print(vocab_size)
+        self. vocabulary = self.vocabulary.union(result[1])
+        self.tokens_freq = result[2]
+        # self.tokens_freq = sorted(self.tokens_freq.values(), reverse=True)
 
     def get_size(self):
         print("Tokens:", len(self.tokens))

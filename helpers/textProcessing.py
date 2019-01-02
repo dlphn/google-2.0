@@ -20,7 +20,7 @@ class TextProcessor:
         self.lemmatizer = WordNetLemmatizer()
         self.tokens = []
         self.tokens_freq = {}
-        self.vocabulary = []
+        self.vocabulary = set()
         self.text = ""
 
     def process(self, text):
@@ -41,21 +41,21 @@ class TextProcessor:
                 self.tokens_freq[token] += 1
             else:
                 self.tokens_freq[token] = 1
-        self.vocabulary = self.tokens
+        self.vocabulary = set(self.tokens)
 
     def lowercase(self):
-        self.vocabulary = [token.lower() for token in self.vocabulary]
+        self.vocabulary = set(token.lower() for token in self.vocabulary)
 
     def remove_stop_words(self):
         with open(CACM_path + "/common_words") as f:
             stop_words = f.read()
-        self.vocabulary = [word for word in self.vocabulary if word not in stop_words]
+        self.vocabulary = set(word for word in self.vocabulary if word not in stop_words)
 
     def stem(self):
-        self.vocabulary = [self.stemmer.stem(word) for word in self.vocabulary]
+        self.vocabulary = set(self.stemmer.stem(word) for word in self.vocabulary)
 
     def lemmatize(self):
-        self.vocabulary = [self.lemmatizer.lemmatize(word) for word in self.vocabulary]
+        self.vocabulary = set(self.lemmatizer.lemmatize(word) for word in self.vocabulary)
 
 
 if __name__ == "__main__":

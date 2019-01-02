@@ -1,3 +1,4 @@
 
 
-CACM_path = '/Users/delphineshi/Documents/google-2.0/CACM'
+CACM_path = '/Users/cecile/PycharmProjects/RIW-project/CACM'
+CS276_path = '/Users/cecile/PycharmProjects/RIW-project/pa1-data'
