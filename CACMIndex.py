@@ -23,13 +23,12 @@ class CACMIndex:
     def build(self, half=False):
         logging.info("Start building index...")
         start = time.time()
-        data = self.get_documentID(half)
+        data = self.get_document_dict(half)
         all_words = " ".join(data.values())
         self.index = indexBuilder.IndexBuilder('CACM', all_words)
         self.index.build()
         end = time.time()
         logging.info("Index built in {0} seconds".format(end - start))
-        self.index.get_size()
 
     def get_tokens(self):
         print(self.index.get_tokens())
@@ -37,15 +36,27 @@ class CACMIndex:
     def get_vocabulary(self):
         print(self.index.get_vocabulary())
 
-    def get_termID(self):
-        termID = dict()
-        id = 1
-        for voca in self.index.get_vocabulary():
-            termID[id] = voca
-            id += 1
-        return termID
+    def get_size(self):
+        self.index.get_size()
 
-    def get_documentID(self, half=False):
+    def get_term_dict(self):
+        """
+        Build the term dictionary (term, termID)
+        :return: terms dictionary
+        """
+        dict_term = dict()
+        term_id = 1
+        for vocab in sorted(list(self.index.get_vocabulary())):
+            dict_term[vocab] = term_id
+            term_id += 1
+        return dict_term
+
+    def get_document_dict(self, half=False):
+        """
+        Build the document dictionary (documentID, document)
+        :param half: bool
+        :return: document dictionary
+        """
         with open(CACM_path + "/cacm.all") as f:
             read_data = f.read()
         if half:
@@ -58,19 +69,19 @@ class CACMIndex:
         return self.index.get_freq()
 
 
-
 if __name__ == "__main__":
     index = CACMIndex()
     index.build()
+    # index.get_size()
     # index.get_tokens()
     # index.get_vocabulary()
-    # print(index.get_termID())
-    # print(index.get_documentID())
+    print(index.get_term_dict())
+    # print(index.get_document_dict())
 
     # print()
     # print("For half of the text:")
     # index.build(half=True)
 
-    graph = FrequencyRankGraph(index.get_freq())
-    graph.draw_graph()
-    graph.draw_log_graph()
+    # graph = FrequencyRankGraph(index.get_freq())
+    # graph.draw_graph()
+    # graph.draw_log_graph()

@@ -20,6 +20,7 @@ class TextProcessor:
         self.lemmatizer = WordNetLemmatizer()
         self.tokens = []
         self.tokens_freq = {}
+        self.vocabulary_full = []  # keep duplicates
         self.vocabulary = set()
         self.text = ""
 
@@ -42,20 +43,28 @@ class TextProcessor:
             else:
                 self.tokens_freq[token] = 1
         self.vocabulary = set(self.tokens)
+        self.vocabulary_full = self.tokens
 
     def lowercase(self):
         self.vocabulary = set(token.lower() for token in self.vocabulary)
+        self.vocabulary_full = [token.lower() for token in self.vocabulary_full]
 
     def remove_stop_words(self):
         with open(CACM_path + "/common_words") as f:
             stop_words = f.read()
         self.vocabulary = set(word for word in self.vocabulary if word not in stop_words)
+        self.vocabulary_full = [word for word in self.vocabulary_full if word not in stop_words]
 
     def stem(self):
         self.vocabulary = set(self.stemmer.stem(word) for word in self.vocabulary)
+        self.vocabulary_full = [self.stemmer.stem(word) for word in self.vocabulary_full]
 
     def lemmatize(self):
         self.vocabulary = set(self.lemmatizer.lemmatize(word) for word in self.vocabulary)
+        self.vocabulary_full = [self.lemmatizer.lemmatize(word) for word in self.vocabulary_full]
+
+    def get_vocabulary_full(self):
+        return self.vocabulary_full
 
 
 if __name__ == "__main__":
@@ -63,3 +72,4 @@ if __name__ == "__main__":
     sentence = 'A quick brown fox jumps over the lazy dog. fox dog'
     sentence2 = "At eight o'clock on Thursday morning Arthur didn't feel very good."
     print(processor.process(sentence))
+    print(processor.get_vocabulary_full())

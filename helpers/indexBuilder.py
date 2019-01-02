@@ -20,8 +20,6 @@ class IndexBuilder:
     def build(self):
         result = self.processor.process(self.data)
         self.tokens = result[0]
-        vocab_size = len(result[1])
-        print(vocab_size)
         self. vocabulary = self.vocabulary.union(result[1])
         self.tokens_freq = result[2]
         # self.tokens_freq = sorted(self.tokens_freq.values(), reverse=True)
