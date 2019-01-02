@@ -22,10 +22,10 @@ class HeapRegression:
         k = 10 ** regression[1]
         return b, k
 
-    def calculate_vocab(self, T, param):
+    def calculate_vocab(self, size, param):
         b = param[0]
         k = param[1]
-        return k * (T ** b)
+        return k * (size ** b)
 
 
 if __name__ == "__main__":
@@ -35,12 +35,10 @@ if __name__ == "__main__":
 
     # CS276 parameters, result from CS276Index.py
     CS276_tokens = np.array([25527977,  12796571])
-    CS276_vocab = np.array([17062207, 8417188])
+    CS276_vocab = np.array([284418, 140665])
 
-    # CS276 parameters
-
-    heap = HeapRegression(CACM_tokens, CACM_vocab)
-    # heap = HeapRegression(CS276_tokens, CS276_vocab)
+    # heap = HeapRegression(CACM_tokens, CACM_vocab)
+    heap = HeapRegression(CS276_tokens, CS276_vocab)
 
     parameters = heap.calculate_regression()
 
