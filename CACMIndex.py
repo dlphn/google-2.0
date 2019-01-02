@@ -29,7 +29,6 @@ class CACMIndex:
         self.index.build()
         end = time.time()
         logging.info("Index built in {0} seconds".format(end - start))
-        self.index.get_size()
 
     def get_tokens(self):
         print(self.index.get_tokens())
@@ -37,7 +36,14 @@ class CACMIndex:
     def get_vocabulary(self):
         print(self.index.get_vocabulary())
 
+    def get_size(self):
+        self.index.get_size()
+
     def get_term_dict(self):
+        """
+        Build the term dictionary (term, termID)
+        :return: terms dictionary
+        """
         dict_term = dict()
         term_id = 1
         for vocab in self.index.get_vocabulary():
@@ -46,6 +52,11 @@ class CACMIndex:
         return dict_term
 
     def get_document_dict(self, half=False):
+        """
+        Build the document dictionary (documentID, document)
+        :param half: bool
+        :return: document dictionary
+        """
         with open(CACM_path + "/cacm.all") as f:
             read_data = f.read()
         if half:
@@ -61,6 +72,7 @@ class CACMIndex:
 if __name__ == "__main__":
     index = CACMIndex()
     index.build()
+    # index.get_size()
     # index.get_tokens()
     # index.get_vocabulary()
     print(index.get_term_dict())
