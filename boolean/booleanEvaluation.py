@@ -19,6 +19,7 @@ class BooleanEvaluation:
 
     def search(self):
         results = self.evaluate()
+        print(results)
         self.display_results(results)
 
     def find_in_index(self, term: str):
@@ -50,15 +51,31 @@ class BooleanEvaluation:
             results = [doc_id for doc_id in self.all_docs_ids() if doc_id not in first_doc_id]
             return results
         elif self.request.operation == Operation.AND:  # à modifier
-            result = []
-            for doc in first_doc_id:
-                if doc in second_doc_id:
-                    result.append(doc)
-            return result
+            # result = []
+            # for doc in first_doc_id:
+            #     if doc in second_doc_id:
+            #         result.append(doc)
+            # print(result)
+            return self.intersect(first_doc_id, second_doc_id)
         elif self.request.operation == Operation.OR:
             return first_doc_id.append(second_doc_id)
         else:
             raise NonValidRequestException(self.request)
+
+    @staticmethod
+    def intersect(first, second):
+        answer = []
+        p1, p2 = 0, 0
+        while p1 < len(first) and p2 < len(second):
+            if first[p1] == second[p2]:
+                answer.append(first[p1])
+                p1 += 1
+                p2 += 1
+            elif int(first[p1]) < int(second[p2]):
+                p1 += 1
+            else:
+                p2 += 1
+        return answer
 
     def display_results(self, doc_ids):
         for doc_id in doc_ids:
@@ -68,8 +85,8 @@ class BooleanEvaluation:
 
 
 if __name__ == "__main__":
-    # request_and = BooleanRequest(Operation.AND, "semiconductor", "hardware")
-    request_not = BooleanRequest(Operation.NOT, "semiconductor")
+    request_and = BooleanRequest(Operation.AND, "arithmetic", "hardware")
+    request_not = BooleanRequest(Operation.NOT, "semiconductor")  # all but 2516
     # request_not_and = BooleanRequest(Operation.NOT, request_and)
-    model = BooleanEvaluation(request_not, "CACM")
+    model = BooleanEvaluation(request_and, "CACM")
     model.search()
