@@ -58,7 +58,7 @@ class BooleanEvaluation:
             # print(result)
             return self.intersect(first_doc_id, second_doc_id)
         elif self.request.operation == Operation.OR:
-            return first_doc_id.append(second_doc_id)
+            return first_doc_id + second_doc_id
         else:
             raise NonValidRequestException(self.request)
 
@@ -82,11 +82,13 @@ class BooleanEvaluation:
             print(doc_id)
             print(self.documents[doc_id])
             print()
+        print(str(len(doc_ids)) + " result(s) retrieved")
 
 
 if __name__ == "__main__":
     request_and = BooleanRequest(Operation.AND, "arithmetic", "hardware")
     request_not = BooleanRequest(Operation.NOT, "semiconductor")  # all but 2516
+    request_or = BooleanRequest(Operation.OR, "arithmetic", "hardware")
     # request_not_and = BooleanRequest(Operation.NOT, request_and)
-    model = BooleanEvaluation(request_and, "CACM")
+    model = BooleanEvaluation(request_or, "CACM")
     model.search()
