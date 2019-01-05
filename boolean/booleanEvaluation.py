@@ -18,9 +18,9 @@ class BooleanEvaluation:
             f.close()
 
     def search(self):
-        results = self.evaluate()
+        results = self.evaluate(self.request)
         print(results)
-        self.display_results(results)
+        # self.display_results(results)
 
     def find_in_index(self, term: str):
         """search term in the index and return the doc ids"""
@@ -30,37 +30,39 @@ class BooleanEvaluation:
     def all_docs_ids(self):
         return list(self.documents.keys())
 
-    def evaluate(self):
+    def evaluate(self, request):
         """returns all docIds corresponding to the search"""
-        if type(self.request.first) == BooleanRequest:
-            first_doc_id = self.request.first.evaluate()
-        elif type(self.request.first) == str:
-            first_doc_id = self.find_in_index(self.request.first)
+        first_doc_id, second_doc_id = [], []
+
+        if type(request.first) == BooleanRequest:
+            first_doc_id = self.evaluate(request.first)
+        elif type(request.first) == str:
+            first_doc_id = self.find_in_index(request.first)
         else:
-            raise NonValidRequestException(self.request)
+            raise NonValidRequestException(request)
 
-        if self.request.second:
-            if type(self.request.second) == BooleanRequest:
-                second_doc_id = self.request.second.evaluate()
-            elif type(self.request.second) == str:
-                second_doc_id = self.find_in_index(self.request.second)
+        if request.second:
+            if type(request.second) == BooleanRequest:
+                second_doc_id = self.evaluate(request.second)
+            elif type(request.second) == str:
+                second_doc_id = self.find_in_index(request.second)
             else:
-                raise NonValidRequestException(self.request)
+                raise NonValidRequestException(request)
 
-        if self.request.operation == Operation.NOT:
+        if request.operation == Operation.NOT:
             results = [doc_id for doc_id in self.all_docs_ids() if doc_id not in first_doc_id]
             return results
-        elif self.request.operation == Operation.AND:  # à modifier
+        elif request.operation == Operation.AND:  # à modifier
             # result = []
             # for doc in first_doc_id:
             #     if doc in second_doc_id:
             #         result.append(doc)
             # print(result)
             return self.intersect(first_doc_id, second_doc_id)
-        elif self.request.operation == Operation.OR:
+        elif request.operation == Operation.OR:
             return first_doc_id + second_doc_id
         else:
-            raise NonValidRequestException(self.request)
+            raise NonValidRequestException(request)
 
     @staticmethod
     def intersect(first, second):
@@ -86,9 +88,9 @@ class BooleanEvaluation:
 
 
 if __name__ == "__main__":
-    request_and = BooleanRequest(Operation.AND, "arithmetic", "hardware")
+    request_and = BooleanRequest(Operation.AND, "arithmetic", "hardware")  # 1258, 1409, 2175, 3131
     request_not = BooleanRequest(Operation.NOT, "semiconductor")  # all but 2516
     request_or = BooleanRequest(Operation.OR, "arithmetic", "hardware")
-    # request_not_and = BooleanRequest(Operation.NOT, request_and)
-    model = BooleanEvaluation(request_or, "CACM")
+    request_not_and = BooleanRequest(Operation.NOT, request_and)  # all but 1258, 1409, 2175, 3131
+    model = BooleanEvaluation(request_not_and, "CACM")
     model.search()
