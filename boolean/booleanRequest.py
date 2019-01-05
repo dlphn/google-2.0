@@ -18,5 +18,5 @@ class BooleanRequest:
         self.operation = operation
         self.first = first_term
         self.second = second_term
-        if self.operation == Operation.NOT and second_term != None:
+        if self.operation == Operation.NOT and second_term is not None:
             raise NonValidRequestException(self)
