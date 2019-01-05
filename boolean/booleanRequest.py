@@ -9,7 +9,7 @@ class Operation(Enum):
 
 class NonValidRequestException(Exception):
     def __init__(self, request):
-        print("This is not a valid reques, please check your arguments :{}".format(request))
+        print("This is not a valid request, please check your arguments :{}".format(request))
 
 
 class BooleanRequest:

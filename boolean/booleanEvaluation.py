@@ -7,14 +7,14 @@ class BooleanEvaluation:
         self.index = index
 
     def find_in_index(self, term: str):
-        '''search term in the index and returns the doc ids'''
+        """search term in the index and returns the doc ids"""
         return
 
     def all_docs_ids(self):
         return
 
     def evaluate(self):
-        '''returns all docIds correspondinf to the search'''
+        """returns all docIds corresponding to the search"""
         if self.request.first.type == BooleanRequest:
             first_doc_id = self.request.first.evaluate_cacm()
         elif self.request.first.type == str:
