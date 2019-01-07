@@ -1,9 +1,10 @@
 from config import *
+from abc import ABC, abstractmethod
 
 import json
 
 
-class Evaluation:
+class Evaluation(ABC):
 
     def __init__(self, request, collection):
         self.request = request
@@ -17,3 +18,12 @@ class Evaluation:
             text = json.load(f)
             f.close()
             return text
+
+    def search(self):
+        results = self.evaluate(self.request)
+        print(results)
+        # self.display_results(results)
+
+    @abstractmethod
+    def evaluate(self, request):
+        pass
