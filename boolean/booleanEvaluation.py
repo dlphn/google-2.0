@@ -1,21 +1,8 @@
 from boolean.booleanRequest import *
-from config import *
-
-import json
+from evaluation import *
 
 
-class BooleanEvaluation:
-    def __init__(self, request, collection):
-        self.request = request
-        self.collection = collection
-        self.index = self.load("index")
-        self.documents = self.load("documents")
-        self.terms = self.load("terms")
-
-    def load(self, file):
-        with open(index_path + "/" + file + "_" + self.collection + ".json") as f:
-            return json.load(f)
-            f.close()
+class BooleanEvaluation(Evaluation):
 
     def search(self):
         results = self.evaluate(self.request)
