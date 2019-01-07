@@ -31,3 +31,9 @@ Frequency graphs: `frequencyRankGraph.py`
 ### Indexation
 
 Entry point : `BSBIndex.py`.
+
+Running this file will generate the different dictionaries (documents, terms, index) in the `index/` folder.
+
+#### Boolean search
+
+Entry point : `boolean/booleanEvaluation.py`.
