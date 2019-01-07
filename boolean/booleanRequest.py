@@ -2,14 +2,22 @@ from enum import Enum
 
 
 class Operation(Enum):
-    OR = 1
-    AND = 2
-    NOT = 3
+    OR = 'OR'
+    AND = 'AND'
+    NOT = 'NOT'
 
 
 class NonValidRequestException(Exception):
     def __init__(self, request):
-        print("This is not a valid reques, please check your arguments :{}".format(request))
+        print("This is not a valid request, please check your arguments :{}".format(request))
+
+
+def display(request):
+    if type(request) == str:
+        return request
+    elif request is None:
+        return ''
+    return display(request.first) + ' ' + request.operation.value + ' ' + display(request.second)
 
 
 class BooleanRequest:
@@ -18,5 +26,5 @@ class BooleanRequest:
         self.operation = operation
         self.first = first_term
         self.second = second_term
-        if self.operation == Operation.NOT and second_term != None:
+        if self.operation == Operation.NOT and second_term is not None:
             raise NonValidRequestException(self)

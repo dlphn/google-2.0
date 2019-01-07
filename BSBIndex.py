@@ -28,7 +28,9 @@ class BSBIndex:
     def build(self):
         self.parse_documents()
         self.invert()
-        # self.write()
+        self.write("index", self.index)
+        self.write("documents", self.documents)
+        self.write("terms", self.terms)
         # self.load()
 
     def parse_documents(self):
@@ -54,9 +56,9 @@ class BSBIndex:
     def get_index(self):
         return self.index
 
-    def write(self):
-        with open(index_path + "/index_" + self.collection + ".json", "w") as f:
-            json.dump(self.index, f)
+    def write(self, title, json_obj):
+        with open(index_path + "/" + title + "_" + self.collection + ".json", "w") as f:
+            json.dump(json_obj, f)
             f.close()
 
     def load(self):
