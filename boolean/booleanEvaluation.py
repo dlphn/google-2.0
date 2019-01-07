@@ -25,7 +25,7 @@ class BooleanEvaluation:
     def find_in_index(self, term: str):
         """search term in the index and return the doc ids"""
         term_id = str(self.terms[term])
-        return self.index[term_id]
+        return [doc_id[0] for doc_id in self.index[term_id]]
 
     def all_docs_ids(self):
         return list(self.documents.keys())
