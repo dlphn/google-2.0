@@ -89,8 +89,8 @@ class BooleanEvaluation:
 
 if __name__ == "__main__":
     request_and = BooleanRequest(Operation.AND, "arithmetic", "hardware")  # 1258, 1409, 2175, 3131
-    request_not = BooleanRequest(Operation.NOT, "semiconductor")  # all but 2516
+    request_not = BooleanRequest(Operation.NOT, BooleanRequest(Operation.NOT, "semiconductor"))  # 2516
     request_or = BooleanRequest(Operation.OR, "arithmetic", "hardware")
     request_not_and = BooleanRequest(Operation.NOT, request_and)  # all but 1258, 1409, 2175, 3131
-    model = BooleanEvaluation(request_not_and, "CACM")
+    model = BooleanEvaluation(request_not, "CACM")
     model.search()
