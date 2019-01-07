@@ -52,12 +52,7 @@ class BooleanEvaluation:
         if request.operation == Operation.NOT:
             results = [doc_id for doc_id in self.all_docs_ids() if doc_id not in first_doc_id]
             return results
-        elif request.operation == Operation.AND:  # à modifier
-            # result = []
-            # for doc in first_doc_id:
-            #     if doc in second_doc_id:
-            #         result.append(doc)
-            # print(result)
+        elif request.operation == Operation.AND:
             return self.intersect(first_doc_id, second_doc_id)
         elif request.operation == Operation.OR:
             return first_doc_id + second_doc_id
