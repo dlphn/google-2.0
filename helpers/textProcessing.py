@@ -33,7 +33,7 @@ class TextProcessor:
             self.stem()
             # self.lemmatize()
 
-        return self.tokens, self.vocabulary, self.tokens_freq
+        return self.tokens, self.vocabulary, self.tokens_freq, self.vocabulary_full
 
     def tokenize(self):
         self.tokens = self.tokenizer.tokenize(self.text)
