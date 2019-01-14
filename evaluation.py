@@ -25,5 +25,5 @@ class Evaluation(ABC):
         # self.display_results(results)
 
     @abstractmethod
-    def evaluate(self, request):
+    def search(self):
         pass
