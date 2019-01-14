@@ -37,3 +37,10 @@ Running this file will generate the different dictionaries (documents, terms, in
 #### Boolean search
 
 Entry point : `boolean/booleanEvaluation.py`.
+
+#### Vectorial search
+
+Entry point : `vectorial/vectorialEvaluation.py`.
+
+Both search models that we implemented inherit from `evaluation.py`.
+
