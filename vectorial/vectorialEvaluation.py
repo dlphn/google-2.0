@@ -16,23 +16,34 @@ class VectorialEvaluation(Evaluation):
         request_vocab_full = result[3]
         documents, similarity = self.calculate_similarity(request_vocab, request_vocab_full, weighting, measure)
         print(documents[:5], similarity[:5])
+        self.display_results(documents[:5])
 
     def calculate_similarity(self, request_vocab, request_vocab_full, weighting, measure):
+        """
+        Build documents and request vectors and compute similarity.
+
+        :param request_vocab: request terms
+        :param request_vocab_full: request terms with duplicates
+        :param weighting: natural / tf-idf / normalized tf-idf
+        :param measure: cosine / Jaccard / Dice
+        :return: list of documents ordered by decreasing similarity measure
+        """
         n_q = 0
         nb_docs = len(self.documents)
         sim = [0] * nb_docs
-        n_d = weighting.nd(self.documents, request_vocab)  # ponderation => entire index vocab ?
-        counter = collections.Counter(request_vocab_full)
+        n_d = weighting.nd(self.documents, request_vocab)  # ponderation
+        counter = collections.Counter(request_vocab_full)  # get occurrences of each term
         for i in range(len(request_vocab)):
             term_id = str(self.terms[request_vocab[i]])
             tf_q = counter[request_vocab[i]]  # term frequency in request a modifier
             ptf_q = weighting.ptf(tf_q)  # ponderation
             df = len(self.index[term_id])
             pdf = weighting.pdf(df, nb_docs)  # ponderation
-            w_t_q = ptf_q * pdf
+            w_t_q = ptf_q * pdf  # tf*idf
             n_q += w_t_q * w_t_q
-            L = self.index[term_id]
-            for doc in L:
+
+            posting_list = self.index[term_id]
+            for doc in posting_list:
                 doc_id = int(doc[0])
                 tf_d = doc[1]  # term frequency in document
                 ptf_d = weighting.ptf(tf_d)  # ponderation
@@ -40,6 +51,7 @@ class VectorialEvaluation(Evaluation):
                 sim[doc_id] += w_t_q * w_t_d
 
         for j in range(nb_docs):
+            # compute similarity between request vector and documents vectors
             if sim[j] != 0:
                 measure = SimilarityMeasure(measure)
                 sim[j] = measure.compute(sim[j], n_d[j], n_q)
