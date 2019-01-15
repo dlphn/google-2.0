@@ -4,11 +4,11 @@ import math
 
 class TfIdfWeighting(Weighting):
 
-    def nd(self, vocab):  # none
-        return 1
+    def nd(self, documents, vocab):  # none
+        return [1] * len(documents)
 
-    def pdf(self, df, N):  # idf
-        return math.log10(N/df)
+    def pdf(self, df, nb_docs):  # idf
+        return math.log10(nb_docs/df)
 
     def ptf(self, tf):  # logarithm
         if tf > 0:
