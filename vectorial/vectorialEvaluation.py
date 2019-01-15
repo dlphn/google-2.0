@@ -1,23 +1,23 @@
 from evaluation import *
 from helpers.textProcessing import *
-import math
 import collections
 import numpy
 from vectorial.naturalWeighting import *
+from vectorial.similarityMeasure import *
 
 
 class VectorialEvaluation(Evaluation):
 
-    def search(self, weighting=NaturalWeighting()):
+    def search(self, weighting=NaturalWeighting(), measure='cosine'):
         # request has to be preprocessed to get vocab and frequency
         processor = TextProcessor(self.collection)
         result = processor.process(self.request)
         request_vocab = list(result[1])
         request_vocab_full = result[3]
-        documents, similarity = self.calculate_similarity(request_vocab, request_vocab_full, weighting)
+        documents, similarity = self.calculate_similarity(request_vocab, request_vocab_full, weighting, measure)
         print(documents[:5], similarity[:5])
 
-    def calculate_similarity(self, request_vocab, request_vocab_full, weighting):
+    def calculate_similarity(self, request_vocab, request_vocab_full, weighting, measure):
         n_q = 0
         nb_docs = len(self.documents)
         sim = [0] * nb_docs
@@ -41,7 +41,8 @@ class VectorialEvaluation(Evaluation):
 
         for j in range(nb_docs):
             if sim[j] != 0:
-                sim[j] = (sim[j] / (math.sqrt(n_d[j]) * math.sqrt(n_q)))
+                measure = SimilarityMeasure(measure)
+                sim[j] = measure.compute(sim[j], n_d[j], n_q)
 
         sorted_docs = numpy.argsort(sim)[::-1]
         sim.sort(reverse=True)
