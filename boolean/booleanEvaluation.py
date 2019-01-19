@@ -7,7 +7,7 @@ class BooleanEvaluation(Evaluation):
     def search(self):
         results = self.evaluate(self.request)
         print(results)
-        # self.display_results(results)
+        self.display_results(results)
 
     def find_in_index(self, term: str):
         """search term in the index and return the doc ids"""
@@ -60,13 +60,6 @@ class BooleanEvaluation(Evaluation):
             else:
                 p2 += 1
         return answer
-
-    def display_results(self, doc_ids):
-        for doc_id in doc_ids:
-            print(doc_id)
-            print(self.documents[doc_id])
-            print()
-        print(str(len(doc_ids)) + " result(s) retrieved")
 
 
 if __name__ == "__main__":

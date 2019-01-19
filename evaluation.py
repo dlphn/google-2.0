@@ -19,11 +19,13 @@ class Evaluation(ABC):
             f.close()
             return text
 
-    def search(self):
-        results = self.evaluate(self.request)
-        print(results)
-        # self.display_results(results)
-
     @abstractmethod
     def search(self):
         pass
+
+    def display_results(self, doc_ids):
+        for doc_id in doc_ids:
+            print(doc_id)
+            print(self.documents[str(doc_id)])
+            print()
+        print(str(len(doc_ids)) + " result(s) retrieved")

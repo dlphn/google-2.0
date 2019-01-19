@@ -3,10 +3,10 @@ from vectorial.weighting import *
 
 class NaturalWeighting(Weighting):
 
-    def nd(self, vocab):
-        return 1
+    def nd(self, documents, vocab):
+        return [1] * len(documents)
 
-    def pdf(self, df, N):
+    def pdf(self, df, nb_docs):
         return 1
 
     def ptf(self, tf):

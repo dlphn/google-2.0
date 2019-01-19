@@ -7,11 +7,11 @@ class Weighting(ABC):
         pass
 
     @abstractmethod
-    def nd(self, vocab):
+    def nd(self, documents, vocab):
         pass
 
     @abstractmethod
-    def pdf(self, df, N):
+    def pdf(self, df, nb_docs):
         pass
 
     @abstractmethod
