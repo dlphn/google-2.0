@@ -6,8 +6,7 @@ class BooleanEvaluation(Evaluation):
 
     def search(self):
         results = self.evaluate(self.request)
-        print(results)
-        self.display_results(results)
+        return results
 
     def find_in_index(self, term: str):
         """search term in the index and return the doc ids"""
@@ -64,8 +63,6 @@ class BooleanEvaluation(Evaluation):
 
 if __name__ == "__main__":
     request_and = BooleanRequest(Operation.AND, "arithmetic", "hardware")  # 1258, 1409, 2175, 3131
-    request_not = BooleanRequest(Operation.NOT, BooleanRequest(Operation.NOT, "semiconductor"))  # 2516
-    request_or = BooleanRequest(Operation.OR, "arithmetic", "hardware")
-    request_not_and = BooleanRequest(Operation.NOT, request_and)  # all but 1258, 1409, 2175, 3131
-    model = BooleanEvaluation(request_not, "CACM")
-    model.search()
+    model = BooleanEvaluation(request_and, "CACM")
+    results = model.search()
+    model.display_results(results, len(results))
