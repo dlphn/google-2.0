@@ -18,7 +18,7 @@ class VectorialEvaluation(Evaluation):
         # print(documents[:5], similarity[:5])
         # self.display_results(documents[:5])
         total_nb = len(list(filter(lambda a: a > 0, similarity)))  # nb of documents of similarity > 0
-        return documents[:10], total_nb
+        return documents[:5], total_nb
 
     def calculate_similarity(self, request_vocab, request_vocab_full, weighting, measure):
         """

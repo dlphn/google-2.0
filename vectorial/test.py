@@ -9,13 +9,13 @@ from vectorial.tfidfWeighting import *
 
 class TestEvaluation(unittest.TestCase):
 
-    def test_simple_CACM_vectorial(self):
+    def test_CACM(self):
         request = "arithmetic hardware"
         model = VectorialEvaluation(request, "CACM")
         results = model.search(NaturalWeighting())
-        self.assertEqual(results.tolist(), [1258, 2967, 1718, 2744, 1409])
+        self.assertEqual([1258, 2967, 1718, 2377, 1965], results[0].tolist())
 
-    def test_against_qrels(self):
+    def test_CACM_against_qrels(self):
         cacm_parser = CACMParser()
         with open("../CACM/query.text") as f:
             cacm_data = f.read()
@@ -44,6 +44,8 @@ class TestEvaluation(unittest.TestCase):
             # self.assertIn(expected[int(request_id)], results)
         for key, value in matching_results.items():
             print("{0}: {1}".format(key, value))
+        # TODO remove
+        self.assertEqual(0,0)
 
 
 if __name__ == "__main__":
