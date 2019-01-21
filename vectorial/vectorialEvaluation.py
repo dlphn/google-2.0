@@ -17,7 +17,8 @@ class VectorialEvaluation(Evaluation):
         documents, similarity = self.calculate_similarity(request_vocab, request_vocab_full, weighting, measure)
         # print(documents[:5], similarity[:5])
         # self.display_results(documents[:5])
-        return documents[:10]
+        total_nb = len(list(filter(lambda a: a > 0, similarity)))  # nb of documents of similarity > 0
+        return documents[:10], total_nb
 
     def calculate_similarity(self, request_vocab, request_vocab_full, weighting, measure):
         """
@@ -68,6 +69,6 @@ class VectorialEvaluation(Evaluation):
 if __name__ == "__main__":
     request = "arithmetic hardware"
     model = VectorialEvaluation(request, "CACM")
-    results = model.search(NaturalWeighting())
+    results, total = model.search(NaturalWeighting())
     print(results)
-    model.display_results(results)
+    model.display_results(results, total)
