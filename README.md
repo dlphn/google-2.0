@@ -3,7 +3,7 @@
 > Implementation of a search engine from scratch
 
 This project is developed by 2 students from CentraleSupélec as part of the "Fondements en Recherche d'Information" course:
-- Cécile Gontier - [cecile.gontier@student.ecp.fr](mailto:cecile.gontier@student.ecp.fr) - [@CecileSerene](https://github.com/CecileSerene)
+- Cécile Gontier - [@CecileSerene](https://github.com/CecileSerene)
 - Delphine Shi - [delphine.shi@student.ecp.fr](mailto:delphine.shi@student.ecp.fr) - [@dlphn](https://github.com/dlphn)
 
 We are working on two given collections:
