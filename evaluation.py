@@ -23,9 +23,12 @@ class Evaluation(ABC):
     def search(self):
         pass
 
-    def display_results(self, doc_ids):
+    def display_results(self, doc_ids, total_results):
+        if total_results is None:
+            total_results = len(doc_ids)
         for doc_id in doc_ids:
             print(doc_id)
             print(self.documents[str(doc_id)])
             print()
-        print(str(len(doc_ids)) + " result(s) retrieved")
+        print(str(len(doc_ids)) + " result(s) displayed")
+        print("There are {} result(s) corresponding to the request.".format(total_results))
