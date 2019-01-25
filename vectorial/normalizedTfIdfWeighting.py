@@ -5,13 +5,10 @@ from vectorial.functions import *
 
 class NormalizedTfIdfWeighting(Weighting):
 
-    def nd(self, documents, vocab):
-        pass
-
-    def nd_norm(self, documents, vocab, index, terms):  # cosine
+    def nd(self, documents, vocab, index, terms):
         nb_docs = len(documents)
         n_d = [0] * (len(documents) + 1)
-        for document_id, document in enumerate(documents):
+        for document_id in documents.keys():
             weight_sum = 0
             for term in vocab:
                 try:
