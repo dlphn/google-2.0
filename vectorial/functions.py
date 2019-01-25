@@ -9,7 +9,7 @@ def term_frequency(term, vocab_full):
     return occurrences[term]
 
 
-def term_frequency_in_index(term_id, document, index):
+def term_frequency_in_index(term_id, document_id, index):
     """
     Occurrences of a term in the document using the inverted index
     """
@@ -18,9 +18,8 @@ def term_frequency_in_index(term_id, document, index):
         posting_list = index[term_id]
     except KeyError:
         print('no')
-    print(posting_list)
     for doc in posting_list:
-        if doc[0] == document:
+        if doc[0] == str(document_id):  # make it directly int
             return doc[1]
     return 0
 

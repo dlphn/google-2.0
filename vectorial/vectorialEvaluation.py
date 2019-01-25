@@ -1,6 +1,5 @@
 from evaluation import *
 from helpers.textProcessing import *
-import collections
 import numpy
 from vectorial.naturalWeighting import *
 from vectorial.normalizedTfIdfWeighting import *
