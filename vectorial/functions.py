@@ -3,7 +3,7 @@ import collections
 
 def term_frequency(term, vocab_full):
     """
-    Occurrences of terms in the full vocabulary
+    Occurrences of term in the full vocabulary
     """
     occurrences = collections.Counter(vocab_full)  # get occurrences of each term
     return occurrences[term]

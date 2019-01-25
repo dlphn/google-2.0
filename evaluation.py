@@ -5,13 +5,16 @@ import json
 
 
 def _decode(o):
+    """
+    Convert int in json as int and not as string
+    """
     if isinstance(o, str):
         try:
             return int(o)
         except ValueError:
             return o
     elif isinstance(o, dict):
-        return {_decode(k): v for k, v in o.items()}
+        return {_decode(k): _decode(v) for k, v in o.items()}
     elif isinstance(o, list):
         return [_decode(v) for v in o]
     else:
