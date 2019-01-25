@@ -78,6 +78,6 @@ if __name__ == "__main__":
     model = VectorialEvaluation(request, "CACM")
     # results, total = model.search(NaturalWeighting())
     # results, total = model.search(TfIdfWeighting())
-    results, total = model.search(NormalizedTfIdfWeighting())
+    results, total = model.search(NormalizedTfIdfWeighting(), "jaccard")
     print(results)
     model.display_results(results, total)

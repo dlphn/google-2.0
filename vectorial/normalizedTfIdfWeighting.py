@@ -13,18 +13,23 @@ class NormalizedTfIdfWeighting(Weighting):
             for term in vocab:
                 try:
                     term_id = terms[term]  # term_id might not exist in index
+
                     tf_d = term_frequency_in_index(term_id, document_id, index)  # term frequency in document
-                    ptf_d = self.ptf(tf_d)  # ponderation
+                    ptf_d = self.ptf(tf_d)
+
                     df = document_frequency(term_id, index)
-                    pdf = self.pdf(df, nb_docs)  # ponderation
+                    pdf = self.pdf(df, nb_docs)
+
                     w_t_d = ptf_d * pdf  # tf*idf
                     weight_sum += w_t_d
                 except KeyError:
                     pass
+
             if weight_sum > 0:
                 n_d[document_id] = 1/math.sqrt(weight_sum)
             else:
                 n_d[document_id] = 1
+
         return n_d
 
     def pdf(self, df, nb_docs):  # idf
