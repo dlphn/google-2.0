@@ -3,6 +3,7 @@ from helpers.textProcessing import *
 import collections
 import numpy
 from vectorial.naturalWeighting import *
+from vectorial.normalizedTfIdfWeighting import *
 from vectorial.similarityMeasure import *
 from vectorial.functions import *
 
@@ -34,7 +35,8 @@ class VectorialEvaluation(Evaluation):
         n_q = 0
         nb_docs = len(self.documents)
         sim = [0] * (nb_docs + 1)
-        n_d = weighting.nd(self.documents, request_vocab)  # ponderation
+        n_d = weighting.nd_norm(self.documents, request_vocab, self.index, self.terms)  # ponderation
+        print(n_d)
         for request_term in request_vocab:
             try:
                 term_id = str(self.terms[request_term])
@@ -69,6 +71,7 @@ class VectorialEvaluation(Evaluation):
 if __name__ == "__main__":
     request = "arithmetic hardware"
     model = VectorialEvaluation(request, "CACM")
-    results, total = model.search(NaturalWeighting())
+    # results, total = model.search(NaturalWeighting())
+    results, total = model.search(NormalizedTfIdfWeighting())
     print(results)
     model.display_results(results, total)
