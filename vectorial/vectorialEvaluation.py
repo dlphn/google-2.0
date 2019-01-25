@@ -39,7 +39,7 @@ class VectorialEvaluation(Evaluation):
         print(n_d)
         for request_term in request_vocab:
             try:
-                term_id = str(self.terms[request_term])
+                term_id = self.terms[request_term]
                 tf_q = term_frequency(request_term, request_vocab_full)  # term frequency in request a modifier
                 ptf_q = weighting.ptf(tf_q)  # ponderation
                 df = document_frequency(term_id, self.index)

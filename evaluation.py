@@ -4,18 +4,35 @@ from abc import ABC, abstractmethod
 import json
 
 
+def _decode(o):
+    if isinstance(o, str):
+        try:
+            return int(o)
+        except ValueError:
+            return o
+    elif isinstance(o, dict):
+        return {_decode(k): v for k, v in o.items()}
+    elif isinstance(o, list):
+        return [_decode(v) for v in o]
+    else:
+        return o
+
+
 class Evaluation(ABC):
 
     def __init__(self, request, collection):
         self.request = request
         self.collection = collection
-        self.index = self.load("index")
         self.documents = self.load("documents")
         self.terms = self.load("terms")
+        self.index = self.load("index")
 
     def load(self, file):
         with open(index_path + "/" + file + "_" + self.collection + ".json") as f:
-            text = json.load(f)
+            if file == "index":
+                text = json.load(f, object_hook=_decode)
+            else:
+                text = json.load(f)
             f.close()
             return text
 
