@@ -4,6 +4,7 @@ import collections
 import numpy
 from vectorial.naturalWeighting import *
 from vectorial.similarityMeasure import *
+from vectorial.functions import *
 
 
 class VectorialEvaluation(Evaluation):
@@ -34,13 +35,12 @@ class VectorialEvaluation(Evaluation):
         nb_docs = len(self.documents)
         sim = [0] * (nb_docs + 1)
         n_d = weighting.nd(self.documents, request_vocab)  # ponderation
-        counter = collections.Counter(request_vocab_full)  # get occurrences of each term
-        for i in range(len(request_vocab)):
+        for request_term in request_vocab:
             try:
-                term_id = str(self.terms[request_vocab[i]])
-                tf_q = counter[request_vocab[i]]  # term frequency in request a modifier
+                term_id = str(self.terms[request_term])
+                tf_q = term_frequency(request_term, request_vocab_full)  # term frequency in request a modifier
                 ptf_q = weighting.ptf(tf_q)  # ponderation
-                df = len(self.index[term_id])
+                df = document_frequency(term_id, self.index)
                 pdf = weighting.pdf(df, nb_docs)  # ponderation
                 w_t_q = ptf_q * pdf  # tf*idf
                 n_q += w_t_q * w_t_q
