@@ -4,7 +4,7 @@ import math
 
 class TfIdfWeighting(Weighting):
 
-    def nd(self, documents, vocab):  # none
+    def nd(self, documents, vocab, index, terms):  # none
         return [1] * (len(documents) + 1)
 
     def pdf(self, df, nb_docs):  # idf

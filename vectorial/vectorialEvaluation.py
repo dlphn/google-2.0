@@ -1,8 +1,9 @@
 from evaluation import *
 from helpers.textProcessing import *
-import collections
 import numpy
 from vectorial.naturalWeighting import *
+from vectorial.tfidfWeighting import *
+from vectorial.normalizedTfIdfWeighting import *
 from vectorial.similarityMeasure import *
 from vectorial.functions import *
 
@@ -34,24 +35,30 @@ class VectorialEvaluation(Evaluation):
         n_q = 0
         nb_docs = len(self.documents)
         sim = [0] * (nb_docs + 1)
-        n_d = weighting.nd(self.documents, request_vocab)  # ponderation
+        n_d = weighting.nd(self.documents, request_vocab, self.index, self.terms)
+        print(n_d)
+
         for request_term in request_vocab:
             try:
                 term_id = self.terms[request_term]
-                tf_q = term_frequency(request_term, request_vocab_full)  # term frequency in request a modifier
-                ptf_q = weighting.ptf(tf_q)  # ponderation
+
+                tf_q = term_frequency(request_term, request_vocab_full)  # term frequency in request
+                ptf_q = weighting.ptf(tf_q)
+
                 df = document_frequency(term_id, self.index)
-                pdf = weighting.pdf(df, nb_docs)  # ponderation
+                pdf = weighting.pdf(df, nb_docs)
+
                 w_t_q = ptf_q * pdf  # tf*idf
                 n_q += w_t_q * w_t_q
 
                 posting_list = self.index[term_id]
                 for doc in posting_list:
-                    doc_id = int(doc[0])
+                    doc_id = doc[0]
                     tf_d = doc[1]  # term frequency in document
-                    ptf_d = weighting.ptf(tf_d)  # ponderation
+                    ptf_d = weighting.ptf(tf_d)
                     w_t_d = n_d[doc_id] * ptf_d * pdf
                     sim[doc_id] += w_t_q * w_t_d
+
             except KeyError:
                 pass
 
@@ -69,6 +76,8 @@ class VectorialEvaluation(Evaluation):
 if __name__ == "__main__":
     request = "arithmetic hardware"
     model = VectorialEvaluation(request, "CACM")
-    results, total = model.search(NaturalWeighting())
+    # results, total = model.search(NaturalWeighting())
+    # results, total = model.search(TfIdfWeighting())
+    results, total = model.search(NormalizedTfIdfWeighting(), "jaccard")
     print(results)
     model.display_results(results, total)

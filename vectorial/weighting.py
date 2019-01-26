@@ -7,7 +7,7 @@ class Weighting(ABC):
         pass
 
     @abstractmethod
-    def nd(self, documents, vocab):
+    def nd(self, documents, vocab, index, terms):
         pass
 
     @abstractmethod
