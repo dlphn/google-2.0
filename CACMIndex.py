@@ -51,9 +51,10 @@ class CACMIndex:
             term_id += 1
         return dict_term
 
-    def get_document_dict(self, half=False):
+    def get_document_dict(self, id=-1, half=False):
         """
         Build the document dictionary (documentID, document)
+        :param id: int
         :param half: bool
         :return: document dictionary
         """

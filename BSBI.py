@@ -1,7 +1,9 @@
 import logging
 import json
-
+from collections import defaultdict
+from itertools import groupby
 from CACMIndex import CACMIndex
+from CS276Index import CS276Index
 from config import index_path
 
 from BSBIndex import BSBIndex
@@ -39,15 +41,22 @@ class BSBI:
         Segment collection in blocks
         """
         if self.collection == 'CACM':
-            self.blocks.append(CACMIndex())
+            collection_index = CACMIndex()
+            collection_index.build()
+            self.blocks.append(collection_index)
+        elif self.collection == 'CS276':
+            collection_index = CS276Index()
+            collection_index.build()
+            self.blocks = [collection_index] * 10
+        self.terms = collection_index.get_term_dict()
 
     def build_inverted_index(self):
         """
         Build the intermediate index for each block
         """
-        for block in self.blocks:
-            block.build()
-            block_index = BSBIndex(self.collection, block.get_term_dict(), block.get_document_dict())
+        logging.info("Building inverted index...")
+        for i, block in enumerate(self.blocks):
+            block_index = BSBIndex(self.collection, self.terms, block.get_document_dict(i))
             block_index.build()
             self.intermediate_results.append(block_index)
 
@@ -55,11 +64,26 @@ class BSBI:
         """
         Merge intermediate results to build the final BSBIndex on the whole collection
         """
-        print(self.intermediate_results[0].get_index())
-        # Merge everything...
-        self.index = self.intermediate_results[0].get_index()
-        self.terms = self.intermediate_results[0].get_terms()
-        self.documents = self.intermediate_results[0].get_documents()
+        logging.info("Merging intermediate results...")
+        index_results = defaultdict(list)
+        for result in self.intermediate_results:
+            self.documents.update(result.get_documents())
+
+            # Merge intermediate indexes
+            for k, v in result.get_index().items():
+                if k in index_results.keys():
+                    index_results[k] += v
+                else:
+                    index_results[k] = v
+
+        # Group by doc_id for each term_id
+        for term_id, posting_list in index_results.items():
+            parsed = groupby(sorted(posting_list, key=get_key), key=get_key)
+            for doc_id, occ in parsed:
+                if term_id in self.index.keys():
+                    self.index[term_id].append((doc_id, sum([oc[1] for oc in occ])))
+                else:
+                    self.index[term_id] = [(doc_id, sum([oc[1] for oc in occ]))]
 
     def get_index(self):
         return self.index
@@ -77,5 +101,5 @@ class BSBI:
 
 if __name__ == "__main__":
     index = BSBI('CACM')
+    # index = BSBI('CS276')
     index.build()
-    print(index.get_index())
