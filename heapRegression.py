@@ -37,6 +37,7 @@ if __name__ == "__main__":
     CS276_tokens = np.array([25527977,  12796571])
     CS276_vocab = np.array([284418, 140665])
 
+    # Change here which collection you want to use
     # heap = HeapRegression(CACM_tokens, CACM_vocab)
     heap = HeapRegression(CS276_tokens, CS276_vocab)
 

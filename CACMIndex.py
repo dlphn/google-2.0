@@ -70,18 +70,20 @@ class CACMIndex:
 
 
 if __name__ == "__main__":
+    '''Run to calculate number of tokens, vocabulary
+    Uncomment parts to see the graph ar calculate values for half of the text
+    '''
     index = CACMIndex()
     index.build()
-    # index.get_size()
-    # index.get_tokens()
-    # index.get_vocabulary()
-    print(index.get_term_dict())
-    # print(index.get_document_dict())
+    index.get_size()
 
+    # Uncomment here to see values for half of the text
     # print()
     # print("For half of the text:")
     # index.build(half=True)
+    # index.get_size()
 
+    # Uncomment here to see the frequency graph
     # graph = FrequencyRankGraph(index.get_freq())
     # graph.draw_graph()
     # graph.draw_log_graph()

@@ -2,11 +2,9 @@ import os
 import logging
 import time
 from helpers import indexBuilder
-
-logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=logging.INFO)
-
 from frequencyRankGraph import *
 
+logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=logging.INFO)
 
 
 class CS276Index:
@@ -43,23 +41,30 @@ class CS276Index:
     def get_vocabulary(self):
         print(self.index.get_vocabulary())
 
+    def get_size(self):
+        self.index.get_size()
+
     def get_freq(self):
         return self.index.get_freq()
 
 
 if __name__ == "__main__":
+    '''Run to calculate number of tokens, vocabulary
+    Uncomment parts to see the graph ar calculate values for half of the text
+    '''
     index = CS276Index()
     index.build()
-    # index.get_tokens()
-    # index.get_vocabulary()
+    # index.get_size()
 
+    # Uncomment here to see values for half of the text
     # print()
     # print("For half of the text:")  # Tokens: 12758945 - Vocabulary: 8432796
     # index.build(half=True)
 
-    graph = FrequencyRankGraph(index.get_freq())
-    graph.draw_graph()
-    graph.draw_log_graph()
+    # Uncomment here to see the frequency graph
+    # graph = FrequencyRankGraph(index.get_freq())
+    # graph.draw_graph()
+    # graph.draw_log_graph()
 
 
 
