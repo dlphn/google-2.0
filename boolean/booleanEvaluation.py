@@ -1,31 +1,17 @@
 from boolean.booleanRequest import *
-from config import *
-
-import json
+from evaluation import *
 
 
-class BooleanEvaluation:
-    def __init__(self, request, collection):
-        self.request = request
-        self.collection = collection
-        self.index = self.load("index")
-        self.documents = self.load("documents")
-        self.terms = self.load("terms")
-
-    def load(self, file):
-        with open(index_path + "/" + file + "_" + self.collection + ".json") as f:
-            return json.load(f)
-            f.close()
+class BooleanEvaluation(Evaluation):
 
     def search(self):
         results = self.evaluate(self.request)
-        print(results)
-        # self.display_results(results)
+        return results
 
     def find_in_index(self, term: str):
         """search term in the index and return the doc ids"""
-        term_id = str(self.terms[term])
-        return self.index[term_id]
+        term_id = self.terms[term]
+        return [doc_id[0] for doc_id in self.index[term_id]]
 
     def all_docs_ids(self):
         return list(self.documents.keys())
@@ -74,18 +60,9 @@ class BooleanEvaluation:
                 p2 += 1
         return answer
 
-    def display_results(self, doc_ids):
-        for doc_id in doc_ids:
-            print(doc_id)
-            print(self.documents[doc_id])
-            print()
-        print(str(len(doc_ids)) + " result(s) retrieved")
-
 
 if __name__ == "__main__":
     request_and = BooleanRequest(Operation.AND, "arithmetic", "hardware")  # 1258, 1409, 2175, 3131
-    request_not = BooleanRequest(Operation.NOT, BooleanRequest(Operation.NOT, "semiconductor"))  # 2516
-    request_or = BooleanRequest(Operation.OR, "arithmetic", "hardware")
-    request_not_and = BooleanRequest(Operation.NOT, request_and)  # all but 1258, 1409, 2175, 3131
-    model = BooleanEvaluation(request_not, "CACM")
-    model.search()
+    model = BooleanEvaluation(request_and, "CACM")
+    res = model.search()
+    model.display_results(res, len(res))

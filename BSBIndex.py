@@ -1,6 +1,7 @@
 import logging
 from itertools import groupby
 import json
+from collections import Counter
 
 from CACMIndex import CACMIndex
 from config import index_path
@@ -39,10 +40,11 @@ class BSBIndex:
         """
         for doc_id, doc in self.documents.items():
             processor = textProcessing.TextProcessor(self.collection)
-            doc_terms = processor.process(doc)[1]  # vocabulary
-            for term in doc_terms:
+            doc_terms = processor.process(doc)[3]  # vocabulary_full
+            vocab_freq = Counter(doc_terms)
+            for term in vocab_freq.keys():
                 term_id = self.terms[term]
-                pair = (term_id, doc_id)
+                pair = (term_id, (doc_id, vocab_freq[term]))
                 self.parsed.append(pair)
 
     def invert(self):
