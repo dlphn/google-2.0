@@ -94,26 +94,37 @@ def test_CACM_against_qrels():
     return expected, actual, matching_results
 
 
-def rappel(expected, matching_results):
-    return len(matching_results)/len(expected)
-
-
-def precision(actual, matching_results):
-    return len(matching_results)/len(actual)
-
-
 def courbe_rappel_precision():
     expected, actual, matching_results = test_CACM_against_qrels()
-    x = []
-    y = []
+    x = [0.1*n for n in range(10)]
+    y = [0.0 for _ in range(10)]
     for request_id in expected.keys():
-        r = rappel(expected[request_id], matching_results[request_id])
-        p = precision(actual[request_id], matching_results[request_id])
-        print(r,p)
-        x.append(r)
-        y.append(p)
-    plt.plot(x, y, linestyle="None", marker="x")
+        rappel, precision = courbe(expected[request_id], actual[request_id])
+        for j in range(10):
+            rj = x[j]
+            for i,r in enumerate(rappel):
+                if r > rj:
+                    y[j] += max(precision[i:])
+                    break
+    for j in range(10):
+        y[j] = y[j]/64
+    plt.plot(x, y, marker="x")
+    plt.axis('equal')
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
     plt.show()
+
+
+def courbe(expected, actual):
+    r = []
+    p = []
+    relevant_results = []
+    for rank in range(len(actual)):
+        if actual[rank] in expected:
+            relevant_results.append(actual[rank])
+            r.append(len(relevant_results)/len(expected))
+            p.append(len(relevant_results)/(rank+1))
+    return r, p
 
 
 courbe_rappel_precision()

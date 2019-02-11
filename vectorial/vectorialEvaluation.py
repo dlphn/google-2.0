@@ -20,7 +20,7 @@ class VectorialEvaluation(Evaluation):
         # print(documents[:5], similarity[:5])
         # self.display_results(documents[:5])
         total_nb = len(list(filter(lambda a: a > 0, similarity)))  # nb of documents of similarity > 0
-        return documents[:5], total_nb
+        return documents[:10], total_nb
 
     def search_all(self, weighting=NaturalWeighting(), measure='cosine'):
         # request has to be preprocessed to get vocab and frequency
@@ -33,7 +33,7 @@ class VectorialEvaluation(Evaluation):
         # self.display_results(documents[:5])
         total_nb = len(list(filter(lambda a: a > 0, similarity)))  # nb of documents of similarity > 0
         pertinent_doc = [documents[i] for i in range(len(documents)) if similarity[i] > 0]
-        return pertinent_doc[:20], total_nb
+        return pertinent_doc, total_nb
 
     def calculate_similarity(self, request_vocab, request_vocab_full, weighting, measure):
         """
