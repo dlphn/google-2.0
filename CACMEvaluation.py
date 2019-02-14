@@ -80,7 +80,7 @@ def test_CACM_against_qrels(weighting):
 
     expected = qrels_parser.parse_all(qrels_data)
 
-    actual = {key: [] for key in range(1, 65)}
+    actual = {key: [] for key in range(1, len(requests)+1)}
     for request_id, request in requests.items():
         model = VectorialEvaluation(request, "CACM")
         results = model.search(weighting)
@@ -93,28 +93,29 @@ def plot_recall_precision(expected, actual, weighting):
     '''Plots the precision, e-measure and f-mesure relative to the recall. It is averaged over all test queries.
     Also calculates the mean average precision
     '''
-
+    nb_points = 11  # As in the lecture, we decide to divide [0,1] into 11 points to plot the curves
+    print(len(expected), len(actual))
     print("Plotting recall-precision curve...")
-    x = [0.1*n for n in range(11)]  # recall
-    y = [0.0 for _ in range(11)]  # precision
-    e = [0.0 for _ in range(11)]  # e-measure
-    f = [0.0 for _ in range(11)]  # f-measure
-    avg_precision = [] # average precision
+    x = [0.1*n for n in range(nb_points)]  # recall
+    y = [0.0 for _ in range(nb_points)]  # precision
+    e = [0.0 for _ in range(nb_points)]  # e-measure
+    f = [0.0 for _ in range(nb_points)]  # f-measure
+    avg_precision = []  # average precision
 
     for request_id in expected.keys():
         rappel, precision = calculate_recall_precision(expected[request_id], actual[request_id])
         avg_precision.append(np.average(precision))
-        for j in range(11):  # approximate the precision for the given recall to get curve interpolation
+        for j in range(nb_points):  # approximate the precision for the given recall to get curve interpolation
             rj = x[j]
             for i,r in enumerate(rappel):
                 if r > rj:
                     y[j] += max(precision[i:])
                     break
-    for j in range(11):
-        y[j] = y[j]/64
+    for j in range(nb_points):
+        y[j] = y[j]/len(actual.keys())
 
     # calculate e and f measure
-    for j in range(11):
+    for j in range(nb_points):
         e[j] += e_measure(x[j], y[j])
         f[j] += 1 - e[j]
 
@@ -144,11 +145,11 @@ def calculate_recall_precision(expected, actual):
 
 def calculate_r_measure(expected, actual):
     for request_id in expected.keys():
-        r_prec = r_precision(expected[request_id], actual[request_id])
+        r_prec = r_measure(expected[request_id], actual[request_id])
         print("For the request {0} the r-precision is {1}.". format(request_id, r_prec))
 
 
-def r_precision(expected, actual):
+def r_measure(expected, actual):
     r_prec = 0
     for rank in range(len(expected)):
         if len(actual) > rank and actual[rank] in expected:
