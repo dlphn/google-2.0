@@ -35,6 +35,7 @@ class BSBI:
         self.write("index", self.index)
         self.write("documents", self.documents)
         self.write("terms", self.terms)
+        logging.info("Finished building inverted index.")
 
     def segment(self):
         """
@@ -58,6 +59,7 @@ class BSBI:
         for i, block in enumerate(self.blocks):
             block_index = BSBIndex(self.collection, self.terms, block.get_document_dict(i))
             block_index.build()
+            logging.info("Built block {} index".format(i))
             self.intermediate_results.append(block_index)
 
     def merge(self):
@@ -100,6 +102,6 @@ class BSBI:
 
 
 if __name__ == "__main__":
-    index = BSBI('CACM')
-    # index = BSBI('CS276')
+    # index = BSBI('CACM')
+    index = BSBI('CS276')  # takes at least 5 minutes to run for the 2 first folders, 7 minutes for 3 first folders
     index.build()
