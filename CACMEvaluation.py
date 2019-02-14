@@ -46,7 +46,7 @@ def get_vectorial_response_time():
     request = "arithmetic hardware"
     model = VectorialEvaluation(request, "CACM")
     start = time.time()
-    results, total = model.search(NormalizedTfIdfWeighting(), "jaccard")
+    results, total = model.search(NormalizedTfIdfWeighting(), "jaccard", rank=10)
     end = time.time()
     return end - start
 
@@ -83,7 +83,7 @@ def test_CACM_against_qrels(weighting):
     actual = {key: [] for key in range(1, 65)}
     for request_id, request in requests.items():
         model = VectorialEvaluation(request, "CACM")
-        results = model.search_all(weighting)
+        results = model.search(weighting)
         actual[int(request_id)] = results[0]
 
     return expected, actual
