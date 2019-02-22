@@ -43,6 +43,7 @@ if __name__ == "__main__":
 
     parameters = heap.calculate_regression()
 
+    print("The Heap law parameters are:")
     print("(b, k) = {}".format(parameters))
 
     print("For 1 million tokens there would be (by Heap law) {} vocabulary"
