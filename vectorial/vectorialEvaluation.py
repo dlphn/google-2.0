@@ -10,7 +10,8 @@ from vectorial.functions import *
 
 class VectorialEvaluation(Evaluation):
 
-    def search(self, weighting=NaturalWeighting(), measure='cosine'):
+    def search(self, weighting=NaturalWeighting(), measure='cosine', rank=-1):
+        '''Returns 10 first results of the search'''
         # request has to be preprocessed to get vocab and frequency
         processor = TextProcessor(self.collection)
         result = processor.process(self.request)
@@ -19,8 +20,12 @@ class VectorialEvaluation(Evaluation):
         documents, similarity = self.calculate_similarity(request_vocab, request_vocab_full, weighting, measure)
         # print(documents[:5], similarity[:5])
         # self.display_results(documents[:5])
-        total_nb = len(list(filter(lambda a: a > 0, similarity)))  # nb of documents of similarity > 0
-        return documents[:5], total_nb
+        pertinent_doc = [documents[i] for i in range(len(documents)) if similarity[i] > 0]
+        total_nb = len(pertinent_doc)  # nb of documents of similarity > 0
+        if rank >= 0:
+            return documents[:rank], total_nb
+        else:
+            return pertinent_doc, total_nb
 
     def calculate_similarity(self, request_vocab, request_vocab_full, weighting, measure):
         """
