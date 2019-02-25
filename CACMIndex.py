@@ -21,14 +21,14 @@ class CACMIndex:
         self.index = None
 
     def build(self, half=False):
-        logging.info("Start building index...")
+        # logging.info("Start building index...")
         start = time.time()
         data = self.get_document_dict(half)
         all_words = " ".join(data.values())
         self.index = indexBuilder.IndexBuilder('CACM', all_words)
         self.index.build()
         end = time.time()
-        logging.info("Index built in {0} seconds".format(end - start))
+        # logging.info("Index built in {0} seconds".format(end - start))
 
     def get_tokens(self):
         print(self.index.get_tokens())

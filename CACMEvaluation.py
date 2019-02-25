@@ -2,6 +2,7 @@ from BSBIndex import BSBIndex
 from CACMIndex import CACMIndex
 import config
 import numpy as np
+import warnings
 
 import time
 import os
@@ -14,6 +15,9 @@ from helpers.CACMParser import CACMParser
 from vectorial.qrelsParser import QrelsParser
 from vectorial.vectorialEvaluation import VectorialEvaluation, NormalizedTfIdfWeighting, TfIdfWeighting, \
     NaturalWeighting
+
+
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
 # Performance
@@ -94,7 +98,6 @@ def plot_recall_precision(expected, actual, weighting):
     Also calculates the mean average precision
     '''
     nb_points = 11  # As in the lecture, we decide to divide [0,1] into 11 points to plot the curves
-    print(len(expected), len(actual))
     print("Plotting recall-precision curve...")
     x = [0.1*n for n in range(nb_points)]  # recall
     y = [0.0 for _ in range(nb_points)]  # precision
@@ -133,7 +136,9 @@ def plot_recall_precision(expected, actual, weighting):
     plt.title("Recall-precision curve for the {}".format(type(weighting).__name__))
     plt.show()
     print("Recall-precision curve plotted")
+    print()
     print("The Mean Average Precision is {}".format(np.nanmean(avg_precision)))
+    print()
 
 
 def calculate_recall_precision(expected, actual):
@@ -152,6 +157,7 @@ def calculate_recall_precision(expected, actual):
 
 
 def calculate_r_measure(expected, actual):
+    print("Calculate r-precision for all requests...")
     for request_id in expected.keys():
         r_prec = r_measure(expected[request_id], actual[request_id])
         print("For the request {0} the r-precision is {1}.". format(request_id, r_prec))
