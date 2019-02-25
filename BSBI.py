@@ -102,6 +102,6 @@ class BSBI:
 
 
 if __name__ == "__main__":
-    index = BSBI('CACM')
-    # index = BSBI('CS276')  # takes at least 5 minutes to run for the 2 first folders, 7 minutes for 3 first folders
+    # index = BSBI('CACM')
+    index = BSBI('CS276')  # takes at least 5 minutes to run for the 2 first folders, 7 minutes for 3 first folders
     index.build()
