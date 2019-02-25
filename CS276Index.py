@@ -26,13 +26,13 @@ class CS276Index:
         start = time.time()
         data = ""
         if self.repo_id < 0 or self.repo_id > 10:  # build on the whole collection
+            count = 0
             for file_id in range(3):  # TODO: reset to 10
-                count = 0
                 for filename in os.listdir("pa1-data/" + str(file_id)):
                     with open("pa1-data/" + str(file_id) + "/" + filename) as f:
                         read_data = f.read()
                         data = data + read_data
-                        self.document_dict[str(file_id) + "-" + str(count)] = read_data
+                        self.document_dict[count] = read_data
                         count += 1
                 logging.info("Read {0}/10 folders".format(file_id + 1))
         # else:  # build for one repository
