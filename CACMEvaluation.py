@@ -102,15 +102,20 @@ def plot_recall_precision(expected, actual, weighting):
     f = [0.0 for _ in range(nb_points)]  # f-measure
     avg_precision = []  # average precision
 
+    # We want to populate y, which will be averaged over all documents
     for request_id in expected.keys():
-        rappel, precision = calculate_recall_precision(expected[request_id], actual[request_id])
-        avg_precision.append(np.average(precision))
+        # for each document, calculate recall and precision lists
+        rappel_list, precision_list = calculate_recall_precision(expected[request_id], actual[request_id])
+        avg_precision.append(np.average(precision_list))
         for j in range(nb_points):  # approximate the precision for the given recall to get curve interpolation
             rj = x[j]
-            for i,r in enumerate(rappel):
+            for i, r in enumerate(rappel_list):
+                # we consider only values where the recall is greater than interpolation recall
                 if r > rj:
-                    y[j] += max(precision[i:])
+                    # and get the max precision from there
+                    y[j] += max(precision_list[i:])
                     break
+    # dont forget to average over all documents
     for j in range(nb_points):
         y[j] = y[j]/len(actual.keys())
 
@@ -132,6 +137,9 @@ def plot_recall_precision(expected, actual, weighting):
 
 
 def calculate_recall_precision(expected, actual):
+    """
+    Gives the list of recall and precision at each rank
+    """
     recall = []
     precision = []
     relevant_results = []
