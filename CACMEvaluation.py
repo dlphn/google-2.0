@@ -160,14 +160,14 @@ def calculate_r_measure(expected, actual):
 def r_measure(expected, actual):
     r_prec = 0
     for rank in range(len(expected)):
-        if len(actual) > rank and actual[rank] in expected:
+        if rank < len(actual) and actual[rank] in expected:
             r_prec += 1
     return r_prec/len(expected)
 
 
 def e_measure(rappel, precision):
     if rappel > 0:
-        beta = float(precision)/float(rappel)
+        beta = float(precision) / float(rappel)
         e = 1 - (((beta * beta + 1) * rappel * precision) / (beta * beta * precision + rappel))
         return e
     else:
