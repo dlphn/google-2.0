@@ -1,11 +1,13 @@
+import logging
 from evaluation import *
 from helpers.textProcessing import *
-import numpy
 from vectorial.naturalWeighting import *
 from vectorial.tfidfWeighting import *
 from vectorial.normalizedTfIdfWeighting import *
 from vectorial.similarityMeasure import *
 from vectorial.functions import *
+
+logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=logging.INFO)
 
 
 class VectorialEvaluation(Evaluation):
@@ -78,7 +80,8 @@ class VectorialEvaluation(Evaluation):
 
 
 if __name__ == "__main__":
-    cs276_request = "data"
+    logging.info("Start search...")
+    cs276_request = "data processing high res calibration"
     cacm_request = "arithmetic hardware"
     model = VectorialEvaluation(cs276_request, "CS276")
     # model = VectorialEvaluation(cacm_request, "CACM")
@@ -87,3 +90,4 @@ if __name__ == "__main__":
     results, total = model.search(NormalizedTfIdfWeighting(), "jaccard")
     print(results)
     model.display_results(results, total)
+    logging.info("Results retrieved.")
