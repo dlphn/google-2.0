@@ -7,7 +7,7 @@ class NormalizedTfIdfWeighting(Weighting):
 
     def nd(self, documents, vocab, index, terms):
         nb_docs = len(documents)
-        n_d = [0] * (len(documents) + 1)
+        n_d = {document_id: 0 for document_id in documents.keys()}
         for document_id in documents.keys():
             weight_sum = 0
             for term in vocab:

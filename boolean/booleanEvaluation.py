@@ -10,8 +10,11 @@ class BooleanEvaluation(Evaluation):
 
     def find_in_index(self, term: str):
         """search term in the index and return the doc ids"""
-        term_id = self.terms[term]
-        return [doc_id[0] for doc_id in self.index[term_id]]
+        if term not in self.terms:
+            return []
+        else:
+            term_id = self.terms[term]
+            return [doc_id[0] for doc_id in self.index[term_id]]
 
     def all_docs_ids(self):
         return list(self.documents.keys())
@@ -54,7 +57,7 @@ class BooleanEvaluation(Evaluation):
                 answer.append(first[p1])
                 p1 += 1
                 p2 += 1
-            elif int(first[p1]) < int(second[p2]):
+            elif first[p1] < second[p2]:
                 p1 += 1
             else:
                 p2 += 1
@@ -62,7 +65,9 @@ class BooleanEvaluation(Evaluation):
 
 
 if __name__ == "__main__":
-    request_and = BooleanRequest(Operation.AND, "arithmetic", "hardware")  # 1258, 1409, 2175, 3131
-    model = BooleanEvaluation(request_and, "CACM")
+    # request_and = BooleanRequest(Operation.AND, "arithmetic", "hardware")  # 1258, 1409, 2175, 3131
+    # model = BooleanEvaluation(request_and, "CACM")
+    request_and = BooleanRequest(Operation.AND, "1", "00")
+    model = BooleanEvaluation(request_and, "CS276")
     res = model.search()
     model.display_results(res, len(res))

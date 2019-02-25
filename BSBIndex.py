@@ -1,10 +1,8 @@
 import logging
 from itertools import groupby
-import json
 from collections import Counter
 
 from CACMIndex import CACMIndex
-from config import index_path
 from helpers import textProcessing
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=logging.INFO)
@@ -29,10 +27,6 @@ class BSBIndex:
     def build(self):
         self.parse_documents()
         self.invert()
-        self.write("index", self.index)
-        self.write("documents", self.documents)
-        self.write("terms", self.terms)
-        # self.load()
 
     def parse_documents(self):
         """
@@ -58,15 +52,11 @@ class BSBIndex:
     def get_index(self):
         return self.index
 
-    def write(self, title, json_obj):
-        with open(index_path + "/" + title + "_" + self.collection + ".json", "w") as f:
-            json.dump(json_obj, f)
-            f.close()
+    def get_terms(self):
+        return self.terms
 
-    def load(self):
-        with open(index_path + "/index_" + self.collection + ".json") as f:
-            print(json.load(f))
-            f.close()
+    def get_documents(self):
+        return self.documents
 
 
 if __name__ == "__main__":
