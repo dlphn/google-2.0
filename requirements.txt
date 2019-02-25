@@ -1,3 +1,4 @@
 nltk
 numpy
 matplotlib
+hurry.filesize
