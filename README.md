@@ -4,7 +4,7 @@
 
 This project is developed by 2 students from CentraleSupélec as part of the "Fondements en Recherche d'Information" course:
 - Cécile Gontier - [@CecileSerene](https://github.com/CecileSerene)
-- Delphine Shi - [delphine.shi@student.ecp.fr](mailto:delphine.shi@student.ecp.fr) - [@dlphn](https://github.com/dlphn)
+- Delphine Shi - [@dlphn](https://github.com/dlphn)
 
 We are working on two given collections:
 
@@ -38,7 +38,7 @@ Frequency graphs: `frequencyRankGraph.py` Helper class to draw frequency graphs.
 
 ### Indexation
 
-Entry point : `BSBIndex.py`.
+Entry point : `BSBI.py`.
 
 Running this file will generate the different dictionaries (documents, terms, index) in the `index/` folder given in `config.py`.
 

@@ -1,11 +1,13 @@
+import logging
 from evaluation import *
 from helpers.textProcessing import *
-import numpy
 from vectorial.naturalWeighting import *
 from vectorial.tfidfWeighting import *
 from vectorial.normalizedTfIdfWeighting import *
 from vectorial.similarityMeasure import *
 from vectorial.functions import *
+
+logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=logging.INFO)
 
 
 class VectorialEvaluation(Evaluation):
@@ -39,9 +41,8 @@ class VectorialEvaluation(Evaluation):
         """
         n_q = 0
         nb_docs = len(self.documents)
-        sim = [0] * (nb_docs + 1)
+        sim = {document_id: 0 for document_id in self.documents.keys()}
         n_d = weighting.nd(self.documents, request_vocab, self.index, self.terms)
-        # print(n_d)
 
         for request_term in request_vocab:
             try:
@@ -65,24 +66,33 @@ class VectorialEvaluation(Evaluation):
                     sim[doc_id] += w_t_q * w_t_d
 
             except KeyError:
+                print("key error")
                 pass
 
-        for j in range(nb_docs):
+        for j in self.documents.keys():
             # compute similarity between request vector and documents vectors
             if sim[j] != 0:
                 measure = SimilarityMeasure(measure)
                 sim[j] = measure.compute(sim[j], n_d[j], n_q)
 
-        sorted_docs = numpy.argsort(sim)[::-1]
-        sim.sort(reverse=True)
-        return sorted_docs, sim
+        sorted_docs = []
+        sorted_sim = []
+        # sort documents by similarity (greatest to lowest)
+        for doc_id, similarity in sorted(sim.items(), key=lambda x: x[1], reverse=True):
+            sorted_docs.append(doc_id)
+            sorted_sim.append(similarity)
+        return sorted_docs, sorted_sim
 
 
 if __name__ == "__main__":
-    request = "arithmetic hardware"
-    model = VectorialEvaluation(request, "CACM")
+    logging.info("Start search...")
+    cs276_request = "data processing high res calibration"
+    cacm_request = "arithmetic hardware"
+    model = VectorialEvaluation(cs276_request, "CS276")
+    # model = VectorialEvaluation(cacm_request, "CACM")
     # results, total = model.search(NaturalWeighting())
     # results, total = model.search(TfIdfWeighting())
     results, total = model.search(NormalizedTfIdfWeighting(), "jaccard")
     print(results)
     model.display_results(results, total)
+    logging.info("Results retrieved.")
