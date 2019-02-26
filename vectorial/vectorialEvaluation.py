@@ -90,9 +90,9 @@ if __name__ == "__main__":
     cacm_request = "arithmetic hardware"
     model = VectorialEvaluation(cs276_request, "CS276")
     # model = VectorialEvaluation(cacm_request, "CACM")
-    # results, total = model.search(NaturalWeighting())
-    # results, total = model.search(TfIdfWeighting())
-    results, total = model.search(NormalizedTfIdfWeighting(), "jaccard")
+    # results, total = model.search(NaturalWeighting(), rank=5)
+    # results, total = model.search(TfIdfWeighting(), rank=5)
+    results, total = model.search(NormalizedTfIdfWeighting(), "jaccard", rank=5)
     print(results)
     model.display_results(results, total)
     logging.info("Results retrieved.")

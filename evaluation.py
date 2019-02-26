@@ -39,10 +39,6 @@ class Evaluation(ABC):
             f.close()
             return text
 
-    @abstractmethod
-    def search(self):
-        pass
-
     def display_results(self, doc_ids, total_results):
         if total_results is None:
             total_results = len(doc_ids)
