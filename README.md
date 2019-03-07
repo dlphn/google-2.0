@@ -19,6 +19,9 @@ CS276_path = '/path/to/pa1-data'
 index_path = '/path/to/index'
 ```
 
+## Easy testing
+Go to `RunMe.ipynb` for a notebook with main results and explanations.
+
 ## Task 1: inverted index
 
 ### Linguistic processing

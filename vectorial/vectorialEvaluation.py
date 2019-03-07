@@ -66,7 +66,7 @@ class VectorialEvaluation(Evaluation):
                     sim[doc_id] += w_t_q * w_t_d
 
             except KeyError:
-                print("key error")
+                # We get here when the query has a term which is not in the index, so we ignore it.
                 pass
 
         for j in self.documents.keys():
