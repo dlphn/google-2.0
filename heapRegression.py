@@ -2,30 +2,33 @@ import numpy as np
 
 
 class HeapRegression:
-    """Calculate the variables of Heap law using linear regression
+    """
+    Calculate the variables of Heap law using linear regression
     """
 
-    def __init__(self, tokens, vocab):
-        """Initialize the variables used for the regression
-
-        :param tokens: array of number of tokens from variable text lengths
-        :param vocab: array of number of vocabulary from variable text lengths
+    def __init__(self, nb_tokens, nb_vocab):
         """
-        self.tokens = tokens
-        self.vocab = vocab
+        Initialize the variables used for regression
+
+        :param nb_tokens: array of number of tokens from variable text lengths
+        :param nb_vocab: array of number of vocabulary from variable text lengths
+        """
+        self.nb_tokens = nb_tokens
+        self.nb_vocab = nb_vocab
+        self.b = 0
+        self.k = 0
 
     def calculate_regression(self):
-        """Calculate (b,k) from Heap law: nb_vocab = k * nb_token ^ b
         """
-        regression = np.polyfit(np.log10(self.tokens), np.log10(self.vocab), deg=1)
-        b = regression[0]
-        k = 10 ** regression[1]
-        return b, k
+        Calculate (b,k) from Heap law: nb_vocab = k * nb_tokens ^ b
+        """
+        regression = np.polyfit(np.log10(self.nb_tokens), np.log10(self.nb_vocab), deg=1)
+        self.b = regression[0]
+        self.k = 10 ** regression[1]
+        return self.b, self.k
 
-    def calculate_vocab(self, size, param):
-        b = param[0]
-        k = param[1]
-        return k * (size ** b)
+    def calculate_vocab(self, size):
+        return self.k * (size ** self.b)
 
 
 if __name__ == "__main__":
@@ -38,8 +41,8 @@ if __name__ == "__main__":
     CS276_vocab = np.array([284418, 140665])
 
     # Change here which collection you want to use
-    # heap = HeapRegression(CACM_tokens, CACM_vocab)
-    heap = HeapRegression(CS276_tokens, CS276_vocab)
+    heap = HeapRegression(CACM_tokens, CACM_vocab)
+    # heap = HeapRegression(CS276_tokens, CS276_vocab)
 
     parameters = heap.calculate_regression()
 
@@ -47,6 +50,6 @@ if __name__ == "__main__":
     print("(b, k) = {}".format(parameters))
 
     print("For 1 million tokens there would be (by Heap law) {} vocabulary"
-          .format(heap.calculate_vocab(1000000, parameters)))
+          .format(heap.calculate_vocab(1000000)))
 
 
