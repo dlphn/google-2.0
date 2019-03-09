@@ -13,7 +13,9 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=lo
 class VectorialEvaluation(Evaluation):
 
     def search(self, weighting=NaturalWeighting(), measure='cosine', rank=-1):
-        '''Returns 10 first results of the search'''
+        """
+        Return results of the search
+        """
         # request has to be preprocessed to get vocab and frequency
         processor = TextProcessor(self.collection)
         result = processor.process(self.request)
