@@ -4,9 +4,12 @@ from evaluation import *
 
 class BooleanEvaluation(Evaluation):
 
-    def search(self):
+    def search(self, rank=-1):
         results = self.evaluate(self.request)
-        return results
+        if rank == -1:
+            return results, len(results)
+        else:
+            return results[:rank], len(results)
 
     def find_in_index(self, term: str):
         """search term in the index and return the doc ids"""
@@ -67,7 +70,7 @@ class BooleanEvaluation(Evaluation):
 if __name__ == "__main__":
     # request_and = BooleanRequest(Operation.AND, "arithmetic", "hardware")  # 1258, 1409, 2175, 3131
     # model = BooleanEvaluation(request_and, "CACM")
-    request_and = BooleanRequest(Operation.AND, "1", "00")
+    request_and = BooleanRequest(Operation.AND, "data", "process")
     model = BooleanEvaluation(request_and, "CS276")
-    res = model.search()
-    model.display_results(res, len(res))
+    res, total = model.search(rank=5)
+    model.display_results(res, total)

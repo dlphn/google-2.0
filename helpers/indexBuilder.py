@@ -27,6 +27,7 @@ class IndexBuilder:
     def get_size(self):
         print("Tokens:", len(self.tokens))
         print("Vocabulary:", len(self.vocabulary))
+        return len(self.tokens), len(self.vocabulary)
 
     def get_tokens(self):
         return self.tokens
@@ -38,17 +39,3 @@ class IndexBuilder:
         return self.tokens_freq
 
 
-if __name__ == "__main__":
-    indexCACM = IndexBuilder('CACM', {
-        '2': "The white fox A quick brown fox jumps over the lazy dog. fox, brown, quick",
-        '3': "Arthur and the kettle At eight o'clock on Thursday morning Arthur didn't feel very good. sick, work",
-    })
-    indexCACM.build()
-    indexCACM.get_size()
-    print(indexCACM.get_vocabulary())
-    print(indexCACM.get_freq())
-    index = IndexBuilder('CS276', "A quick brown fox jumps over the lazy fox. At eight o'clock on Thursday morning Arthur didn't feel very good. But the fox was happy to see Arthur.")
-    index.build()
-    index.get_size()
-    print(index.get_vocabulary())
-    print(index.get_freq())

@@ -3,10 +3,9 @@ import time
 
 from config import CACM_path
 from helpers import indexBuilder, CACMParser
+from frequencyRankGraph import *
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=logging.INFO)
-
-from frequencyRankGraph import *
 
 
 class CACMIndex:
@@ -21,14 +20,14 @@ class CACMIndex:
         self.index = None
 
     def build(self, half=False):
-        logging.info("Start building index...")
-        start = time.time()
+        # logging.info("Start building index...")
+        # start = time.time()
         data = self.get_document_dict(half)
         all_words = " ".join(data.values())
         self.index = indexBuilder.IndexBuilder('CACM', all_words)
         self.index.build()
-        end = time.time()
-        logging.info("Index built in {0} seconds".format(end - start))
+        # end = time.time()
+        # logging.info("Index built in {0} seconds".format(end - start))
 
     def get_tokens(self):
         print(self.index.get_tokens())
@@ -37,7 +36,7 @@ class CACMIndex:
         print(self.index.get_vocabulary())
 
     def get_size(self):
-        self.index.get_size()
+        return self.index.get_size()
 
     def get_term_dict(self):
         """
@@ -51,10 +50,9 @@ class CACMIndex:
             term_id += 1
         return dict_term
 
-    def get_document_dict(self, id=-1, half=False):
+    def get_document_dict(self, half=False):
         """
         Build the document dictionary (documentID, document)
-        :param id: int
         :param half: bool
         :return: document dictionary
         """
@@ -76,15 +74,15 @@ if __name__ == "__main__":
     '''
     index = CACMIndex()
     index.build()
-    index.get_size()
+    nb_tokens, nb_vocab = index.get_size()
 
     # Uncomment here to see values for half of the text
-    # print()
-    # print("For half of the text:")
-    # index.build(half=True)
-    # index.get_size()
+    print()
+    print("For half of the text:")
+    index.build(half=True)
+    nb_tokens_half, nb_vocab_half = index.get_size()
 
     # Uncomment here to see the frequency graph
-    # graph = FrequencyRankGraph(index.get_freq())
-    # graph.draw_graph()
-    # graph.draw_log_graph()
+    graph = FrequencyRankGraph(index.get_freq())
+    graph.draw_graph()
+    graph.draw_log_graph()

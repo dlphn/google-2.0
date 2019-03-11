@@ -13,7 +13,9 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=lo
 class VectorialEvaluation(Evaluation):
 
     def search(self, weighting=NaturalWeighting(), measure='cosine', rank=-1):
-        '''Returns 10 first results of the search'''
+        """
+        Return results of the search
+        """
         # request has to be preprocessed to get vocab and frequency
         processor = TextProcessor(self.collection)
         result = processor.process(self.request)
@@ -66,7 +68,7 @@ class VectorialEvaluation(Evaluation):
                     sim[doc_id] += w_t_q * w_t_d
 
             except KeyError:
-                print("key error")
+                # We get here when the query has a term which is not in the index, so we ignore it.
                 pass
 
         for j in self.documents.keys():
@@ -90,9 +92,9 @@ if __name__ == "__main__":
     cacm_request = "arithmetic hardware"
     model = VectorialEvaluation(cs276_request, "CS276")
     # model = VectorialEvaluation(cacm_request, "CACM")
-    # results, total = model.search(NaturalWeighting())
-    # results, total = model.search(TfIdfWeighting())
-    results, total = model.search(NormalizedTfIdfWeighting(), "jaccard")
+    # results, total = model.search(NaturalWeighting(), rank=5)
+    # results, total = model.search(TfIdfWeighting(), rank=5)
+    results, total = model.search(NormalizedTfIdfWeighting(), "jaccard", rank=5)
     print(results)
     model.display_results(results, total)
     logging.info("Results retrieved.")

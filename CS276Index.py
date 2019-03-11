@@ -2,6 +2,7 @@ import os
 import logging
 import time
 from helpers import indexBuilder
+from frequencyRankGraph import *
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s : %(message)s', level=logging.INFO)
 
@@ -22,35 +23,24 @@ class CS276Index:
         """
         Build the index and the document dictionary (documentID, document)
         """
-        logging.info("Start building index...")
+        # logging.info("Start building index...")
         start = time.time()
         data = ""
-        if self.repo_id < 0 or self.repo_id > 10:  # build on the whole collection
-            for file_id in range(10):
-                count = 0
-                for filename in os.listdir("pa1-data/" + str(file_id)):
-                    with open("pa1-data/" + str(file_id) + "/" + filename) as f:
-                        read_data = f.read()
-                        data = data + read_data
-                        self.document_dict[str(file_id) + "-" + str(count)] = read_data
-                        count += 1
-                logging.info("Read {0}/10 folders".format(file_id + 1))
-        # else:  # build for one repository
-        #     count = 0
-        #     for filename in os.listdir("pa1-data/" + str(self.repo_id)):
-        #         with open("pa1-data/" + str(self.repo_id) + "/" + filename) as f:
-        #             read_data = f.read()
-        #             data = data + read_data
-        #             self.document_dict[str(self.repo_id) + "-" + str(count)] = read_data
-        #             count += 1
-        #     logging.info("Read folder pa1-data/{0}/".format(self.repo_id))
+        for file_id in range(10):
+            count = 0
+            for filename in os.listdir("pa1-data/" + str(file_id)):
+                with open("pa1-data/" + str(file_id) + "/" + filename) as f:
+                    read_data = f.read()
+                    data = data + read_data
+                    self.document_dict[str(file_id) + "-" + str(count)] = read_data
+                    count += 1
+            logging.info("Read {0}/10 folders".format(file_id + 1))
         if half:
             data = data[:len(data)//2]
         self.index = indexBuilder.IndexBuilder('CS276', data)
         self.index.build()
         end = time.time()
-        logging.info("Index built in {0} seconds".format(end - start))
-        self.index.get_size()
+        # logging.info("Index built in {0} seconds".format(end - start))
 
     def get_tokens(self):
         print(self.index.get_tokens())
@@ -59,7 +49,7 @@ class CS276Index:
         print(self.index.get_vocabulary())
 
     def get_size(self):
-        self.index.get_size()
+        return self.index.get_size()
 
     def get_freq(self):
         return self.index.get_freq()
@@ -90,7 +80,7 @@ if __name__ == "__main__":
     index.build()
     # index.get_tokens()
 
-    # index.get_size()
+    index.get_size()
 
     # Uncomment here to see values for half of the text
     # print()
@@ -98,9 +88,9 @@ if __name__ == "__main__":
     # index.build(half=True)
 
     # Uncomment here to see the frequency graph
-    # graph = FrequencyRankGraph(index.get_freq())
-    # graph.draw_graph()
-    # graph.draw_log_graph()
+    graph = FrequencyRankGraph(index.get_freq())
+    graph.draw_graph()
+    graph.draw_log_graph()
 
 
 
