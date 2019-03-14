@@ -22,6 +22,11 @@ index_path = '/path/to/index/'
 ## Easy testing
 Go to `RunMe.ipynb` for a notebook with main results and explanations.
 
+## Download the index
+If you don't want to spend too much time generating the index, you can download it from there :
+https://drive.google.com/drive/folders/17glYdz6KY_PJsnANKrYi4xooNkDQ0ua1?usp=sharing.
+Be sure to put the index in the `index/` folder.
+
 ## Task 1: inverted index
 
 ### Linguistic processing
